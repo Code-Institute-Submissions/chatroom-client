@@ -17,15 +17,15 @@ angular
         templateUrl: 'public/components/account/templates/register.template.html',
         controller: 'AccountController'
     }).state({
-        name: 'rooms',
-        url: '/rooms',
-        templateUrl: 'public/components/room/templates/room.template.html',
-        controller: 'RoomController'
-    }).state({
         name: 'profile',
         url: '/profile',
         templateUrl: 'public/components/account/templates/profile.template.html',
         controller: 'AccountController'
+    }).state({
+        name: 'rooms',
+        url: '/rooms',
+        templateUrl: 'public/components/room/templates/room.template.html',
+        controller: 'RoomController'
     });
 
     $urlRouterProvider.otherwise('/');
