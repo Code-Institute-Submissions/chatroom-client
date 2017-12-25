@@ -3,6 +3,7 @@
   "description": "Front-end Angular Application - Stream 3 Final Project, Chatroom ",
   "dependencies": {
     "express": "^4.13.4",
+    "reload": "^2.2.2",
     "serve-static": "^1.13.1"
   },
   "scripts": {

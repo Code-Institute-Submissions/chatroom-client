@@ -21,13 +21,15 @@
     </section>
 </div> -->
 
-
 <ul class="nav flex-column">
     <li class="nav-item">
         <a class="nav-link active" ui-sref="profile">Profile</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Rooms</a>
+        <ul ng-repeat="room in rooms track by room.id" id='room-list'>
+            <a href='#' ng-click='updateRoomMessages(room.id)'><li><small>{{ room.name | limitTo: 10 }}</small></li></a>
+        </ul>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="#">Messages</a>

@@ -1,24 +1,37 @@
-<div class="container-fluid">
-    <div class="col-md-3 sidebar">
-        <sidebar></sidebar>
-    </div>
-    <div class="col-md-9 content" style="height: 100%; padding: 5%;">
-        <div class="col-md-12" style="border: 1px solid red; height: 85%;">
-            <div class="media" ng-repeat="message in messages track by message.id">
-                <div class="media-left media-middle">
-                    <a href="#">
-                        <img class="mr-3" src="http://via.placeholder.com/64X64" alt="Generic placeholder image">
-                    </a>
-                </div>
-                <div class="media-body">
-                    <h5 class="mt-0" ng-if="!user.first_name"><strong>{{user.data.username}}</strong><small>{{message.date_added}}</small></h5>
-                    <h5 class="mt-0" ng-if="user.first_name"><strong>{{user.data.username}}</strong><small>{{message.date_added}}</small></h5>
-                    <p>{{ message.message }}</p>
+<div class="row">
+    <div class="container-fluid">
+        <div class="col-md-2 sidebar">
+            <sidebar></sidebar>
+        </div>
+        <div class="col-md-10 content" id="message-viewport" style="height: 85%;">
+            <div class="col-md-12">
+                <div class="panel panel-primary" ng-repeat="message in messages track by message.id">
+                    <div class="media">
+                        <div class="media-left media-middle">
+                            <a href="#">
+                                <img class="mr-3" src="http://via.placeholder.com/64X64" alt="Generic placeholder image">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h5 class="mt-0" ng-if="!user.first_name">
+                                <strong>{{message.user.username}}</strong>
+                                <small>{{message.date_added}}</small>
+                            </h5>
+                            <h5 class="mt-0" ng-if="user.first_name">
+                                <strong>{{message.user.username}}</strong>
+                                <small>{{message.date_added}}</small>
+                            </h5>
+                            <p>{{ message.message }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-12" id="message-input" style="margin-top: 5%; border: 1px solid red;">
-            <input type="text" class="form-control" placeholder="Enter Your Message" />
+        <div class="col-md-12" id="message-section" style="margin-top: 5%;">
+            <form class="form" name="MessageForm">
+                <input type="text" id="message-input" class="form-control" placeholder="Enter Your Message" my-enter="sendMessage()" ng-model="inputMessage"
+                />
+            </form>
         </div>
     </div>
 </div>
