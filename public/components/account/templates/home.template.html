@@ -26,19 +26,19 @@
                     <form name="AccountForm" data-ng-submit="userLogin()" novalidate>
                         <div class="form-group">
                             <label for="user.uername">Email</label>
-                            <input class="form-control" ng-model="user.username" aria-describedby="emailHelp" placeholder="Enter email">
+                            <input type="text" class="form-control" ng-model="user.username" aria-describedby="emailHelp"/>
                         </div>
 
                         <div class="form-group">
                             <label for="user.password">Password</label>
-                            <input class="form-control" ng-model="user.password" aria-describedby="passwordHelp" placeholder="Password">
+                            <input type="text" class="form-control" ng-model="user.password" aria-describedby="passwordHelp"/>
                         </div>
                         <p class="alert alert-danger hide" id="error-messages">{{ errorMessage }}</p>
                         <button class="btn btn-primary">Sign In</button>
                     </form>
                     <p>
                         <small>Don't have an account?
-                            <a href="#" ui-sref="register">Why not sign up</a>
+                            <a ui-sref="register">Why not sign up</a>
                         </small>
                     </p>
                 </div>

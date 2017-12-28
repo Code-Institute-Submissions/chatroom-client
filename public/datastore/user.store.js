@@ -1,27 +1,27 @@
 chatroom
     .factory('UserStore', function() {
         var UserStore = function() {
-            var user = []
+            var user = {};
             
             function get (){
-                return user[0];
+                return user;
             };
 
-            function getById (id){
-                return user.filter(x => x.id === id);
-            };
+            function set(key, value){
+                user[key] = value;
+            }
 
             function addUser (userObject) {
-                user.push(userObject);
+                user = userObject;
             };
 
-            function removeUser(id){
-                user.pop(x => x.id === id);
+            function removeUser(){
+                user = {};
             }
 
             return { 
                 'get': get,
-                'getById': getById,
+                'set': set,
                 'addUser': addUser,
                 'removeUser': removeUser
             };

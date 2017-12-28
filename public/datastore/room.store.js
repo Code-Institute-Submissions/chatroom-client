@@ -1,5 +1,5 @@
 chatroom
-    .factory('RoomStore', function() {
+    .factory('RoomStore', function($cookies) {
         var RoomStore = function() {
             var rooms = []
             
@@ -8,13 +8,14 @@ chatroom
             };
 
             function addRooms (roomObjects) {
+                debugger;
                 roomObjects.forEach(room => {
-                    rooms.push(room); 
+                    $cookies.putObject(room.name, room);
                 });
             };
 
-            function addRoom (room) {
-                rooms.push(room); 
+            function addRoom (key, value) {
+                ; 
             };
 
             return { 

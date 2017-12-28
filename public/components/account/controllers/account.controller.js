@@ -1,15 +1,31 @@
 chatroom
-    .controller('AccountController', function ($scope, $state, AccountService, UserStore) {
+    .controller('AccountController', function ($scope, $state, $cookies, AccountService, UserStore) {
         console.log("Accounts Controller Loaded");
 
-        $scope.userObject = {};
-
-        $scope.getUser = function(user_id){
-            AccountService.get('v1/accounts/' + user_id, 
-            null, 
-            getUserSuccess,
-            getUserFailure);
+        if ($scope.user || $scope.user === 'undefined') {
+            $scope.userObject = $cookies.get('user');
+            console.log("user object Gotted");
         }
+
+        $scope.getUser = function (user_id) {
+            AccountService.get('v1/accounts_reader/' + user_id + '/',
+                null,
+                getUserSuccess,
+                getUserFailure);
+        };
+
+        function getUserSuccess(response) {
+            console.log('get user success', response.data);
+            $cookies.putObject('user', response.data);
+
+            setTimeout(function () {
+                $state.go('rooms');
+            }, 1500);
+        };
+
+        function getUserFailure(data) {
+            console.log(data);
+        };
 
         $scope.userLogin = function () {
             AccountService.post('v1/rest-auth/login/',
@@ -19,20 +35,7 @@ chatroom
                 },
                 loginSuccess,
                 loginFailure);
-        }
-
-        $scope.registerUser = function () {
-            AccountService.post('v1/rest-auth/registration/',
-                {
-                    'username': $scope.user.email,
-                    'email': $scope.user.email,
-                    'password1': $scope.user.password,
-                    'password2': $scope.user.password2
-                },
-                registerSuccess,
-                registerFailure)
         };
-
 
         function loginSuccess(response) {
             console.log('login success', response.data);
@@ -49,6 +52,18 @@ chatroom
                 $scope.errorMessage = String.empty;
                 $('#error-messages').addClass('hide');
             }, 3000);
+        };
+
+        $scope.registerUser = function () {
+            AccountService.post('v1/rest-auth/registration/',
+                {
+                    'username': $scope.user.email,
+                    'email': $scope.user.email,
+                    'password1': $scope.user.password,
+                    'password2': $scope.user.password2
+                },
+                registerSuccess,
+                registerFailure)
         };
 
         function registerSuccess(response) {
@@ -74,20 +89,6 @@ chatroom
             }, 3000);
         };
 
-        function getUserSuccess(response) {
-            console.log('get user success', response.data);
-            $scope.userObject = response;
-            UserStore.addUser($scope.userObject);
-
-            setTimeout(function () {
-                $state.go('rooms');
-            }, 1500);
-        };
-
-        function getUserFailure(data) {
-            console.log(data);
-        };
-
         function userRoomSuccess(response) {
             $scope.getUser(response.data.user);
         };
@@ -95,5 +96,4 @@ chatroom
         function userRoomFailure(response) {
             console.log('user room failure', response.data);
         };
-
     });

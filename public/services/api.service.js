@@ -6,18 +6,29 @@ chatroom
             function get(endpoint, data, success, failure){
                 var url = applicationUrl.concat('/').concat(endpoint);
                
-                return $http.get(url, data, success, failure)
-                    .then(function(response){
-                        success(response);
-                    }, function(response){
-                        failure(response);
+                return $http.get(url, { })
+                    .then(function (result) {
+                        success(result);
+                    }, function (error) {
+                        failure(error);
                     });
             };
 
             function post(endpoint, data, success, failure){
                 var url = applicationUrl.concat('/').concat(endpoint);
 
-                return $http.post(url, data, success, failure)
+                return $http.post(url, data, { })
+                    .then(function (result) {
+                        success(result);
+                    }, function (error) {
+                        failure(error);
+                    });
+            };
+
+            function put(endpoint, data, success, failure){
+                var url = applicationUrl.concat('/').concat(endpoint);
+
+                return $http.put(url, data, success, failure)
                     .then(function(data){
                         success(data);
                     }, function(data){
@@ -27,7 +38,8 @@ chatroom
 
             return {
                 'get': get,
-                'post': post
+                'post': post,
+                'put': put
             }
         }
 

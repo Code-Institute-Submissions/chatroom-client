@@ -1,46 +1,58 @@
 <!DOCTYPE html>
 <html ng-app="ChatroomApplication">
-    <head>
-        <meta charset="utf-8">
-        <title>Chatroom</title>
-        
 
-        <!-- Theme -->         
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />              
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-        <script src="bower_components/jquery/dist/jquery.js"></script>
-        <link rel="stylesheet" type="text/css"  href="static/css/site.css"></link>        
-        
-        <!--  Angular Setup -->
-        <script src="bower_components/angular/angular.js"></script>
-        <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-        <script src="bower_components/angular-resource/angular-resource.min.js"></script> 
-        <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>  
-        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>      
-        
+<head>
+    <meta charset="utf-8">
+    <title>Chatroom</title>
 
-        <!-- Application Setup -->
-        <script src="public/appRoutes.js"></script>
-        <script src="public/app.js"></script>
 
-        <!--  Controllers -->
-        <script src="public/components/account/controllers/account.controller.js"></script>
-        <script src="public/components/room/controllers/room.controller.js"></script>
+    <!-- Theme -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/css/site.css"></link>
 
-        <!-- Services -->
-        <script src="public/components/account/services/account.service.js"></script>
-        <script src="public/components/room/services/room.service.js"></script>
-        <script src="public/services/api.service.js"></script>
-        <script src="public/services/myenter.service.js"></script>
-        <script src="public/datastore/room.store.js"></script>
-        <script src="public/datastore/user.store.js"></script>
-        
-        <!-- Directives -->
-        <script src="public/components/_sidebar/sidebar.directive.js"></script>
-    </head>
-    <body>
-        <!-- The dynamic templates will be served within this div -->
-        <ui-view></ui-view>
+    <!--  Angular Setup -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
 
-        </body>
+
+    <!-- Application Setup -->
+    <script src="public/appRoutes.js"></script>
+    <script src="public/app.js"></script>
+
+    <!--  Controllers -->
+    <script src="public/components/account/controllers/account.controller.js"></script>
+    <script src="public/components/profile/controllers/profile.controller.js"></script>
+    <script src="public/components/room/controllers/room.controller.js"></script>
+
+    <!-- Services -->
+    <script src="public/components/account/services/account.service.js"></script>
+    <script src="public/components/profile/services/profile.service.js"></script>
+    <script src="public/components/room/services/room.service.js"></script>
+    <script src="public/services/api.service.js"></script>
+    <script src="public/services/myenter.service.js"></script>
+    <script src="public/datastore/room.store.js"></script>
+    <script src="public/datastore/user.store.js"></script>
+
+    <!-- Directives -->
+    <!-- <script src="public/components/_sidebar/sidebar.directive.js"></script> -->
+    <script src="public/components/_subscription/subscription.directive.js"></script>
+
+    <script src="https://js.stripe.com/v2/" type="text/javascript"></script>
+    <script type="text/javascript" src="bower_components/angular-payments/lib/angular-payments.js"></script>
+    <script src ="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <!-- The dynamic templates will be served within this div -->
+    <ui-view></ui-view>
+
+</body>
+
 </html>

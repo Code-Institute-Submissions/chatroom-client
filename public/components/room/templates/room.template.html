@@ -1,7 +1,35 @@
 <div class="row">
     <div class="container-fluid">
         <div class="col-md-2 sidebar">
-            <sidebar></sidebar>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" ui-sref="profile">Profile</a>
+                </li>
+                <li ng-if="user.is_subscribed">
+                    <a class="nav-link" ui-sref="addRoom">Add Room</a>
+                </li>
+                <li ng-if="!user.is_subscribed">
+                    <small>
+                        <a class="nav-link" ui-sref="subscription">Sign up </a> to create rooms
+                    </small>
+                </li>
+                <li class="nav-item" ng-repeat="room in rooms track by room.id" id='room-list'>
+                    <a href='#' ng-click='loadRoom(room.id)'>
+                        <small>{{ room.name }}</small>
+                    </a>
+                </li>
+                <li ng-if="!user.is_subscribed" class="nav-item">
+                    <small>
+                        <a ui-sref='subscription'>Sign up </a> to send private messages
+                    </small>
+                </li>
+                <li ng-if="user.is_subscribed || user.data.is_superuser" class="nav-item">
+                    <a class="nav-link" href="#">Messages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" ng-click="logout()">Logout</a>
+                </li>
+            </ul>
         </div>
         <div class="col-md-10 content" id="message-viewport" style="height: 85%;">
             <div class="col-md-12">

@@ -3,7 +3,7 @@
         <div class="col-md-5">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                   Profile Picture
+                    Profile Picture
                 </div>
                 <div class="panel-body">
                     Look for file upload/ image crop packages
@@ -20,8 +20,7 @@
                         <form name="ProfileForm" data-ng-submit="updateProfile()" novalidate>
                             <div class="form-group">
                                 <label>Email Address</label>
-                                <input type="text" name="name" class="form-control" data-ng-model="user.username" required>
-                                <p data-ng-show="ProfileForm.name.$pristine" class="help-block">Your username is required</p>
+                                <input type="text" name="name" class="form-control" data-ng-model="user.username">
                             </div>
                             <div class="form-group">
                                 <label>First Name</label>
@@ -35,8 +34,10 @@
                                 <label>Phone Number</label>
                                 <input type="text" name="phone_number" class="form-control" data-ng-model="user.phone_number">
                             </div>
-                            <button type="submit" class="btn btn-primary"><span class="fa fa-cloud"></span> Update</button>
-                            <button type="submit" class="btn btn-primary pull-right" ui-sref="rooms"><span class="fa fa-reply"></span> Back to Rooms</button>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="fa fa-cloud"></span> Update</button>
+                            <button type="submit" class="btn btn-primary pull-right" ui-sref="rooms">
+                                <span class="fa fa-reply"></span> Back to Rooms</button>
                         </form>
                     </div>
                 </div>
@@ -46,8 +47,17 @@
                     Subscription Details
                 </div>
                 <div class="panel-body">
-                    <div class="col-md-12" id="subscription">
-                        Subscription details/links to go here
+                    <div class="panel-body">
+                        <div class="col-md-12" id="subscription" ng-if="!user.is_subscribed">
+                            <h5>For just £1 a month you can subscribe for the ability to add new rooms</h5>
+                            <subscription></subscription>
+                        </div>
+                        <div class="col-md-12" id="subscription" ng-if="user.is_subscribed">
+                            <div>
+                                Your subscription is due to renew on {{ user.subscription_end }}
+                            </div>
+                            <button class="btn btn-primary" type="submit">Cancel</button>
+                        </div>
                     </div>
                 </div>
             </div>

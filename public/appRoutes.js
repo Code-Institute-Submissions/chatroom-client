@@ -1,6 +1,6 @@
 angular
 .module('appRoutes', ["ui.router"])
-.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function($stateProvider, $urlRouterProvider, $locationProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$windowProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $windowProvider) {
     $locationProvider.html5Mode({
         enabled: true,
         requireBase: false
@@ -19,14 +19,27 @@ angular
     }).state({
         name: 'profile',
         url: '/profile',
-        templateUrl: 'public/components/account/templates/profile.template.html',
-        controller: 'AccountController'
+        templateUrl: 'public/components/profile/templates/profile.template.html',
+        controller: 'ProfileController'
     }).state({
         name: 'rooms',
-        url: '/rooms',
+        url: '/user_rooms',
         templateUrl: 'public/components/room/templates/room.template.html',
         controller: 'RoomController'
+    }).state({
+        name: 'addRoom',
+        url: '/addRoom',
+        templateUrl: 'public/components/room/templates/addRoom.template.html',
+        controller: 'RoomController'
+    }).state({
+        name: 'subscription',
+        url: '/subscription',
+        templateUrl: 'public/components/account/templates/subscription.template.html',
+        controller: 'AccountController'
     });
 
     $urlRouterProvider.otherwise('/');
+
+    $window = $windowProvider.$get();
+    $window.Stripe.setPublishableKey('pk_test_I3u9O19d5x4QyY39NPdFS4Bl');
 }]);

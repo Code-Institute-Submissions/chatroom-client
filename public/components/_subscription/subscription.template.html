@@ -1,0 +1,19 @@
+<form stripe-form="createSubscription">
+    <div class="form-group">
+        <label>Card Number</label>
+        <input class="form-control" ng-model="number" placeholder="Card Number" payments-format="card" />
+    </div>
+    <div class="form-group">
+        <label>Card Expiration Date</label>
+        <input class="form-control" ng-model="expiry" placeholder="Expiration" payments-format="expiry" />
+    </div>
+    <div class="form-group">
+        <label>Security Number</label>
+        <input class="form-control" ng-model="cvc" placeholder="CVC" payments-format="cvc" />
+    </div>
+    <div ng-if="checkoutForm.card.$invalid">
+        Error: invalid card number!
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+    <button type="submit" class="btn btn-primary pull-right" ui-sref="rooms">Back</button>
+</form>
