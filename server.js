@@ -19,20 +19,37 @@ app.get('*', function (req, res) {
   res.sendFile('index.html', { root: __dirname });
 });
 
-io.on('connection', function (client) {
-    console.log(client.name + ' has connected to the chat.' + client.id);
+//var room_no = 1;
+io.on('connection', function (socket) {
 
-    client.on('join', function (data) {
-        console.log(data);
-    });
+  socket.on('connect', function (data) {
+    console.log(socket.name + ' has connected to the chat.' + socket.id);
+  });
 
-    client.on('messages', function (data) {
-        client.emit('broad', data);
-    });
+  socket.on('changeRoom', function(room_no){
+    io.sockets.in('room-' + room_no)
+    .emit('changeRoom', "You are in Room No " + room_no);
+  })
 
-    client.on('disconnect', function () {
-        console.log(client.name + ' has disconnected from the chat.' + client.id);
-    });
+  socket.on('broad', function (message) {
+    console.log('broad event', message);
+    //io.emit(message);
+  });
+
+  socket.on('messages', function (data) {
+    console.log("Messages Event", data);
+    io.in('room-'+data.room_id).emit('broad', data.message);
+  });
+
+  socket.on('join', function (channel) {
+    console.log("join channel", channel)
+    socket.join('room-' + channel);
+
+  });
+
+  socket.on('disconnect', function () {
+    console.log(socket.id + ' has disconnected from the chat.');
+  });
 });
 
 server.listen(port);
