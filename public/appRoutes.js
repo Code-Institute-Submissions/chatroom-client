@@ -19,8 +19,8 @@ angular
     }).state({
         name: 'profile',
         url: '/profile',
-        templateUrl: 'public/components/profile/templates/profile.template.html',
-        controller: 'ProfileController'
+        templateUrl: 'public/components/account/templates/profile.template.html',
+        controller: 'AccountController'
     }).state({
         name: 'rooms',
         url: '/user_rooms',
@@ -35,6 +35,11 @@ angular
         name: 'subscription',
         url: '/subscription',
         templateUrl: 'public/components/account/templates/subscription.template.html',
+        controller: 'AccountController'
+    }).state({
+        name: 'reset',
+        url: '/password_reset',
+        templateUrl: 'public/components/account/templates/password-reset.template.html',
         controller: 'AccountController'
     });
 

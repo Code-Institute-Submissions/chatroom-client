@@ -1,14 +1,68 @@
 chatroom
-    .controller('AccountController', function ($scope, $state, $cookies, AccountService, UserStore) {
+    .controller('AccountController', function ($scope, $state, $cookies, $timeout, AccountService, Upload) {
         console.log("Accounts Controller Loaded");
 
-        if ($scope.user || $scope.user === 'undefined') {
-            $scope.userObject = $cookies.get('user');
-            console.log("user object Gotted");
+        if (!$scope.user) {
+            $scope.user = $cookies.getObject('user');
+            console.log("account user", $scope.user);
+        };
+
+        var socket = io.connect();
+
+        $scope.token_id = "";
+
+        $scope.number;
+        $scope.expiry;
+        $scope.cvc;
+
+        $scope.profileImage = '';
+        $scope.croppedProfileImage = '';
+
+        var handleFileSelect = function (evt) {
+            var file = evt.currentTarget.files[0];
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+                $scope.$apply(function ($scope) {
+                    $scope.profileImage = evt.target.result;
+                });
+            };
+            reader.readAsDataURL(file);
+        };
+        angular.element(document.querySelector('#fileInput')).on('change', handleFileSelect);
+
+        // $scope.upload = function (file) {
+        //     debugger;
+        //     Upload.upload({
+        //         url: 'upload/',
+        //         data: {file: file, 'username': $scope.username}
+        //     }).then(function (resp) {
+        //         $scope.updateUserDetails();
+        //         console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+        //     }, function (resp) {
+        //         console.log('Error status: ' + resp.status);
+        //     }, function (evt) {
+        //         var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+        //         console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        //     });
+        // };
+        $scope.upload = function (dataUrl, name) {
+            Upload.upload({
+                url: 'upload/',
+                data: {
+                    file: Upload.dataUrltoBlob(dataUrl, name)
+                },
+            }).then(function (response) {
+                $scope.updateUserDetails();
+            }, function (response) {
+                if (response.status > 0) $scope.errorMsg = response.status
+                    + ': ' + response.data;
+            }, function (evt) {
+                $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
+            });
         }
 
         $scope.getUser = function (user_id) {
-            AccountService.get('v1/accounts_reader/' + user_id + '/',
+            AccountService.get('account/user/' + user_id + '/',
                 null,
                 getUserSuccess,
                 getUserFailure);
@@ -28,7 +82,7 @@ chatroom
         };
 
         $scope.userLogin = function () {
-            AccountService.post('v1/rest-auth/login/',
+            AccountService.post('rest-auth/login/',
                 {
                     'username': $scope.user.username,
                     'password': $scope.user.password
@@ -54,8 +108,57 @@ chatroom
             }, 3000);
         };
 
+        $scope.updateUserDetails = function () {
+            var profile_path = $scope.picFile.name ? "/media/profile_images/" + $scope.picFile.name : "";
+            AccountService.patch("account/update/" + $scope.user.id + '/',
+                {
+                    'username': $scope.user.email,
+                    'email': $scope.user.email,
+                    'first_name': $scope.user.first_name ? $scope.first_name : "",
+                    'last_name': $scope.user.last_name ? $scope.last_name : "",
+                    'phone_number': $scope.phone_number,
+                    'profile_picture_path': profile_path
+                },
+                updateDetailsSuccess,
+                updateDetailsFailure
+            );
+        };
+
+        $scope.createSubscription = function (code, result) {
+            if (result.error) {
+                // Add error messages to screen
+                updateDetailsFailure();
+            } else {
+                $scope.token_id = result.id;
+                AccountService.put("account/subscription/",
+                    {
+                        'user': {
+                            'email': $scope.user.email,
+                            'is_subscribed': true,
+                            'subscription_end': Date(),
+                            'stripe_id': $scope.token_id
+                        },
+                        'stripe_token': result.id
+                    },
+                    updateDetailsSuccess,
+                    updateDetailsFailure)
+            }
+        };
+
+        function updateDetailsSuccess(response) {
+            $scope.user = response.data;
+            $cookies.putObject('user', $scope.user);
+            $scope.croppedProfileImage = "";
+            $scope.picFile = "";
+            console.log(response.data);
+        };
+
+        function updateDetailsFailure(response) {
+            console.log(response.data);
+        };
+
         $scope.registerUser = function () {
-            AccountService.post('v1/rest-auth/registration/',
+            AccountService.post('rest-auth/registration/',
                 {
                     'username': $scope.user.email,
                     'email': $scope.user.email,
@@ -69,7 +172,8 @@ chatroom
         function registerSuccess(response) {
             console.log('register success', response.data);
 
-            AccountService.post('v1/user_rooms/',
+            // response from registration success returns a user: id
+            AccountService.post('chatroom/add_to_room/',
                 {
                     'user': response.data.user,
                     'room': 1
@@ -96,4 +200,40 @@ chatroom
         function userRoomFailure(response) {
             console.log('user room failure', response.data);
         };
+
+        $scope.logout = function () {
+            AccountService.post('rest-auth/logout/',
+                null,
+                logoutSuccess,
+                logoutFailure);
+        };
+
+        function logoutSuccess(response) {
+            socket.disconnect();
+            $cookies.remove('user');
+            $cookies.remove('room_id');
+            $state.go('home');
+        };
+
+        function logoutFailure(response) {
+            console.log('logout failure', response);
+        };
+
+        $scope.resetPassword = function () {
+            AccountService.post('rest-auth/password/change/',
+                {
+                    'new_password1': $scope.new_password1,
+                    'new_password2': $scope.new_password2
+                },
+                resetSuccess,
+                resetFailure);
+        }
+
+        function resetSuccess(response) {
+            console.log('reset success', response);
+        }
+
+        function resetFailure(response) {
+            console.log("reset failure", response);
+        }
     });

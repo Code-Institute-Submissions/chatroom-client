@@ -3,6 +3,13 @@ var path = require('path');
 
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
+var multer = require('multer');
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 var port = process.env.PORT || 8081;
 
@@ -14,6 +21,32 @@ var io = require('socket.io')(server);
 
 
 app.use(serveStatic(path.join(__dirname)));
+app.use(express.static(__dirname + '/media/profile_images'));
+
+app.use(bodyParser.json());
+
+var storage = multer.diskStorage({ 
+  destination: function (req, file, cb) {
+    cb(null, './media/profile_images')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+});
+var upload = multer({ 
+  storage: storage
+}).single('file');
+
+app.post('/upload', function (req, res) {
+  upload(req, res, function (err) {
+    if (err) {
+      res.json({ error_code: 1, err_desc: err });
+      return;
+    }
+    console.log("Filed Name: ", req.file)
+    res.status(204).end();
+  }) 
+});
 
 app.get('*', function (req, res) {
   res.sendFile('index.html', { root: __dirname });
@@ -26,9 +59,9 @@ io.on('connection', function (socket) {
     console.log(socket.name + ' has connected to the chat.' + socket.id);
   });
 
-  socket.on('changeRoom', function(room_no){
+  socket.on('changeRoom', function (room_no) {
     io.sockets.in('room-' + room_no)
-    .emit('changeRoom', "You are in Room No " + room_no);
+      .emit('changeRoom', "You are in Room No " + room_no);
   })
 
   socket.on('broad', function (message) {
@@ -38,7 +71,7 @@ io.on('connection', function (socket) {
 
   socket.on('messages', function (data) {
     console.log("Messages Event", data);
-    io.in('room-'+data.room_id).emit('broad', data.message);
+    io.in('room-' + data.room_id).emit('broad', data.message);
   });
 
   socket.on('join', function (channel) {

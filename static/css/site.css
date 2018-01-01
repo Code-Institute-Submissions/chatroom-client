@@ -1,10 +1,31 @@
 html, body, .container-fluid, .row {
+    font-family: 'Raleway', sans-serif;
     height: 100%;
     overflow-x: hidden;
 }
 
 .ng-invalid {
     color: red;
+}
+
+#cropping-area{
+    border-radius: 50%;
+    border-color: 1px #2c3e50 solid !important;
+}
+
+#image-thumbnail{
+    width:64px;
+    height: 64px;
+    border-radius: 50%;
+}
+
+#profile-image{
+    margin-left: auto;
+    margin-right: auto;
+    height: 70%;
+    width: 70%;
+    border: 1px solid #2c3e50 !important;
+    border-radius: 50%;
 }
 
 .sidebar {

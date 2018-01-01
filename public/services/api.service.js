@@ -1,7 +1,7 @@
 chatroom
     .factory('ApiService', function($http){
         var ApiService = function() {
-            var applicationUrl = 'http://localhost:8000';
+            var applicationUrl = 'http://localhost:8000/v1';
 
             function get(endpoint, data, success, failure){
                 var url = applicationUrl.concat('/').concat(endpoint);
@@ -36,10 +36,22 @@ chatroom
                     });
             };
 
+            function patch(endpoint, data, success, failure){
+                var url = applicationUrl.concat('/').concat(endpoint);
+
+                return $http.patch(url, data, success, failure)
+                    .then(function(data){
+                        success(data);
+                    }, function(data){
+                        failure(data);
+                    });
+            };
+
             return {
                 'get': get,
                 'post': post,
-                'put': put
+                'put': put,
+                'patch': patch
             }
         }
 

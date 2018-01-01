@@ -26,16 +26,18 @@
                 <li ng-if="user.is_subscribed || user.data.is_superuser" class="nav-item">
                     <a class="nav-link" href="#">Messages</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" ng-click="logout()">Logout</a>
-                </li>
             </ul>
         </div>
         <div class="col-md-10" id="message-viewport" style="height: 85%;">
             <div class="col-md-12">
-                <div class="well">
-                    <div class="panel panel-primary" id="messages-content" ng-repeat="view_message in messages track by $index">
+                <div class="well" id="messages-content">
+                    <div class="panel panel-primary" ng-repeat="view_message in messages track by $index">
                         <div class="media">
+                            <div class="media-left media-middle">
+                                <img ng-if="!view_message.user.profile_picture_path" class="mr-3" src="http://via.placeholder.com/64X64"/>
+                                <img id="image-thumbnail" ng-if="view_message.user.profile_picture_path" 
+                                    class="mr-3" id="image-thumbnail" ng-src="{{view_message.user.profile_picture_path}}" alt="Generic placeholder image"/>
+                            </div>
                             <div class="media-body">
                                 <h5 ng-if="!user.first_name">
                                     <strong>{{view_message.user.username}}</strong>
