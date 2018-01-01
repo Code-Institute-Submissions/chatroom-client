@@ -6,7 +6,7 @@ chatroom
             function get(endpoint, data, success, failure){
                 var url = applicationUrl.concat('/').concat(endpoint);
                
-                return $http.get(url, { })
+                return $http.get(url, data)
                     .then(function (result) {
                         success(result);
                     }, function (error) {

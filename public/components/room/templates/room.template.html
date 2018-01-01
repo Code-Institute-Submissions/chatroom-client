@@ -28,10 +28,12 @@
                 </li>
             </ul>
         </div>
-        <div class="col-md-10" id="message-viewport" style="height: 85%;">
+        <div class="col-md-10" id="message-viewport"  style="height: 85%;" scroll="onScroll">
             <div class="col-md-12">
                 <div class="well" id="messages-content">
-                    <div class="panel panel-primary" ng-repeat="view_message in messages track by $index">
+                    <a ng-click="loadRoom(roomId)" ng-if="!fetchingMessages" ><small>Load More</small></a>
+                    <a ng-show="fetchingMessages">Loading...</a>
+                    <div class="panel panel-primary" ng-repeat="view_message in messages | orderBy: 'id' ">
                         <div class="media">
                             <div class="media-left media-middle">
                                 <img ng-if="!view_message.user.profile_picture_path" class="mr-3" src="http://via.placeholder.com/64X64"/>
@@ -44,7 +46,7 @@
                                     <small>{{view_message.date_added | date : "medium" }}</small>
                                 </h5>
                                 <h5 ng-if="user.first_name">
-                                    <strong>{{view_message.user.username}}</strong>
+                                    <strong>{{view_message.user.first_name}}</strong>
                                     <small>{{view_message.date_added | date : "medium" }}</small>
                                 </h5>
                                 <p>{{ view_message.message }}</p>

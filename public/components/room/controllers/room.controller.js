@@ -1,11 +1,14 @@
 chatroom
-    .controller('RoomController', function ($scope, $state, $cookies, RoomService) {
+    .controller('RoomController', function ($scope, $state, $cookies, $timeout, RoomService) {
         console.log("Room Controller Loaded");
+        var LIMIT = 10;
+
+        $scope.fetchingMessages = false;
 
         $scope.user = $cookies.getObject('user');
         $scope.roomId = $cookies.get('roomId');
 
-        $scope.messages = {};
+        $scope.messages = [];
         $scope.message = {};
         $scope.rooms = {};
         $scope.newRoom = {};
@@ -38,18 +41,60 @@ chatroom
             console.log("Room ID: ", $scope.roomId);
         }
 
+        $scope.onScroll = function (event, element) {
+            if (!$scope.fetchingMessages && element.scrollTop() === 0) {
+                $scope.loadRoom($scope.roomId);
+                console.log("Scroll Event: ", event);
+            }
+        }
+
         $scope.loadRoom = function (room_id) {
+
+            var isTerminal = $scope.pagination &&
+                $scope.pagination.current_page >= $scope.pagination.total_pages &&
+                $scope.pagination.current_page <= 1;
+
+            if ($scope.fetchingMessages) {
+                return;
+            }
+            $scope.fetchingMessages = true;
+            offset = $scope.messages.length;
             $cookies.put('roomId', room_id);
             $scope.roomId = room_id;
-
-            RoomService.get('chatroom/get_room_messages/'+room_id,
-                null,
+            RoomService.get('chatroom/get_room_messages/' + room_id,
+                {
+                    'params': {
+                        'offset': offset,
+                        'limit': LIMIT
+                    }
+                },
                 loadRoomSuccess,
                 loadRoomFailure);
         };
 
+        $scope.$on('endlessScroll:next', function () {
+            console.log("Next event");
+            $scope.loadRoom($scope.roomId);
+        });
+
         function loadRoomSuccess(response) {
-            $scope.messages = response.data;
+
+            $scope.pagination = angular.fromJson(response.headers('x-pagination'));
+
+            var initialLoad = $scope.messages.length == 0 ? true : false;
+
+            Object.values(response.data).forEach(data => {
+                $scope.messages.push(data);
+            });
+
+            if (initialLoad) {
+                $timeout(function () {
+                    var scrollHeight = $('#message-viewport')[0].scrollHeight
+                    $('#message-viewport')[0].scrollTop = scrollHeight;
+                });
+            }
+
+            $scope.fetchingMessages = false;
 
             socket.emit('join', $scope.roomId, function () {
                 console.log('joined: ' + $scope.room_id);
@@ -61,6 +106,7 @@ chatroom
         };
 
         function loadRoomFailure(response) {
+            $scope.fetchingMessages = false;
             console.log('message failure', response.data);
         };
 
@@ -93,7 +139,7 @@ chatroom
                 room_id: $scope.roomId,
                 message: $scope.message
             });
-            
+
             $scope.inputMessage = "";
         };
 
@@ -137,7 +183,7 @@ chatroom
         };
 
         function getUserRooms() {
-            RoomService.get('chatroom/get_user_rooms/'+$scope.user.id,
+            RoomService.get('chatroom/get_user_rooms/' + $scope.user.id,
                 null,
                 getUserRoomsSuccess,
                 getUserRoomsFailure);
