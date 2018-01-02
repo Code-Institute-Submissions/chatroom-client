@@ -1,0 +1,81 @@
+<div class="row">
+    <div class="col-md-12">
+        <ul class="nav nav-tabs navbar nav-justified">
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#profile">
+                    <i class="material-icons">face</i>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#rooms">
+                    <i class="material-icons">store</i>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#messages">
+                    <i class="material-icons">chat_bubble_outline</i>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="profile" class="tab-pane fade in active">
+                <a href='#' ng-click='loadRoom(room.id)'>
+                </a>
+                <div id='profile-items'>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" ui-sref="profile">Profile</a>
+                        </li>
+                        <li>
+                            Subscription Details
+                        </li>
+                        <li>
+                            Rooms left to add on subscription plan
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="rooms" class="tab-pane fade">
+                <ul class="nav flex-column">
+                    <li class="nav-item" ng-repeat="room in rooms track by room.id" id='room-list'>
+                        <a href='#' ng-click='loadRoom(room.id)'>
+                            {{ room.name }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div id="messages" class="tab-pane fade">
+                <h3>Menu 1</h3>
+                <p>Some content in menu 1.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 
+<ul class="nav flex-column">
+    <li class="nav-item">
+        <a class="nav-link active" ui-sref="profile">Profile</a>
+    </li>
+    <li ng-if="user.is_subscribed">
+        <a class="nav-link" ui-sref="addRoom">Add Room</a>
+    </li>
+    <li ng-if="!user.is_subscribed">
+        <small>
+            <a class="nav-link" ui-sref="subscription">Sign up </a> to create rooms
+        </small>
+    </li>
+    <li class="nav-item" ng-repeat="room in rooms track by room.id" id='room-list'>
+        <a href='#' ng-click='loadRoom(room.id)'>
+            <small>{{ room.name }}</small>
+        </a>
+    </li>
+    <li ng-if="!user.is_subscribed" class="nav-item">
+        <small>
+            <a ui-sref='subscription'>Sign up </a> to send private messages
+        </small>
+    </li>
+    <li ng-if="user.is_subscribed || user.data.is_superuser" class="nav-item">
+        <a class="nav-link" href="#">Messages</a>
+    </li>
+</ul> -->

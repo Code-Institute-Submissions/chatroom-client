@@ -1,54 +1,33 @@
 <div class="row">
     <div class="container-fluid">
-        <div class="col-md-2 sidebar">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" ui-sref="profile">Profile</a>
-                </li>
-                <li ng-if="user.is_subscribed">
-                    <a class="nav-link" ui-sref="addRoom">Add Room</a>
-                </li>
-                <li ng-if="!user.is_subscribed">
-                    <small>
-                        <a class="nav-link" ui-sref="subscription">Sign up </a> to create rooms
-                    </small>
-                </li>
-                <li class="nav-item" ng-repeat="room in rooms track by room.id" id='room-list'>
-                    <a href='#' ng-click='loadRoom(room.id)'>
-                        <small>{{ room.name }}</small>
-                    </a>
-                </li>
-                <li ng-if="!user.is_subscribed" class="nav-item">
-                    <small>
-                        <a ui-sref='subscription'>Sign up </a> to send private messages
-                    </small>
-                </li>
-                <li ng-if="user.is_subscribed || user.data.is_superuser" class="nav-item">
-                    <a class="nav-link" href="#">Messages</a>
-                </li>
-            </ul>
+        <div class="col-md-3 sidebar">
+            <sidebar></sidebar>
         </div>
-        <div class="col-md-10" id="message-viewport"  style="height: 85%;" scroll="onScroll">
+        <div class="col-md-9 col-md-offset-3" id="message-viewport" style="height: 85%;" scroll="onScroll">
             <div class="col-md-12">
                 <div class="well" id="messages-content">
-                    <a ng-click="loadRoom(roomId)" ng-if="!fetchingMessages" ><small>Load More</small></a>
-                    <a ng-show="fetchingMessages">Loading...</a>
+                    <div id="loading-display" class="text-center">
+                        <a ng-click="loadRoom(roomId)" ng-if="!fetchingMessages">
+                            <small>View Historic</small>
+                        </a>
+                        <a ng-show="fetchingMessages">Fetching <span class="fa fa-circle-o-notch fa-spin"></span></a>
+                    </div>
                     <div class="panel panel-primary" ng-repeat="view_message in messages | orderBy: 'id' ">
                         <div class="media">
                             <div class="media-left media-middle">
-                                <img ng-if="!view_message.user.profile_picture_path" class="mr-3" src="http://via.placeholder.com/64X64"/>
-                                <img id="image-thumbnail" ng-if="view_message.user.profile_picture_path" 
-                                    class="mr-3" id="image-thumbnail" ng-src="{{view_message.user.profile_picture_path}}" alt="Generic placeholder image"/>
+                                <img ng-if="!view_message.user.profile_picture_path" class="mr-3" src="http://via.placeholder.com/64X64" />
+                                <img id="image-thumbnail" ng-if="view_message.user.profile_picture_path" class="mr-3" id="image-thumbnail" ng-src="{{view_message.user.profile_picture_path}}"
+                                    alt="Generic placeholder image" />
                             </div>
                             <div class="media-body">
-                                <h5 ng-if="!user.first_name">
+                                <h6 ng-if="!user.first_name">
                                     <strong>{{view_message.user.username}}</strong>
                                     <small>{{view_message.date_added | date : "medium" }}</small>
-                                </h5>
-                                <h5 ng-if="user.first_name">
+                                </h6>
+                                <h6 ng-if="user.first_name">
                                     <strong>{{view_message.user.first_name}}</strong>
                                     <small>{{view_message.date_added | date : "medium" }}</small>
-                                </h5>
+                                </h6>
                                 <p>{{ view_message.message }}</p>
                             </div>
                         </div>
@@ -56,7 +35,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12" id="message-section" style="margin-top: 5%;">
+        <div class="col-md-9 col-md-offset-3" id="message-section" style="margin-top: 5%;">
             <form class="form" name="MessageForm">
                 <input type="text" id="message-input" class="form-control" placeholder="Enter Your Message" my-enter="sendMessage()" ng-model="inputMessage"
                 />
