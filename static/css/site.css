@@ -2,15 +2,17 @@ html, body, .container-fluid, .row {
     font-family: 'Raleway', sans-serif;
     height: 100%;
     overflow-x: hidden;
-    background: #151515;
-    color: #2a9fd6;
 }
 a:link{
-    text-decoration: underline;
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: none;
 }
 
 ::-webkit-scrollbar {
-    width: 5px;
+    width: 8px;
     height: 20px
 }
 
@@ -71,39 +73,17 @@ a:link{
     border-radius: 50%;
 }
 
-.sidebar {
-    
-    color: #fff;
-}
-
-/* .sidebar {
-    background: #2c3e50;
-    color: #fff;
-    font-size: 1.1em;    
-    line-height: 1em;
-    padding-bottom: 1%;
-    padding-left: 2%;
-    padding-top: 1%;
-    list-style: none;
-    text-decoration: none;
+#sidebar-items > div > div {    
+    text-align: left;
+    display: block;
+    display: block;
     text-transform: uppercase;
-    height: 100%;
-}
-
-.sidebar li {
-    width: 100%;
-    border-bottom: 1px solid #636366;
-}
-
-#room-list li {
-    border-bottom: none;
-    list-style: none;
-    font-size: 1.1em;    
-    line-height: .7em;
-    padding-bottom: 1%;
-    padding-left: 2%;
-    padding-top: 1%;
-} */
+    color: #18bc9c;
+    height: 5% !important;
+    font-size: 1.1em; 
+    font-weight: 500;
+    padding: 2%;
+} 
 
 #message-viewport{
     overflow-y: scroll;
@@ -121,6 +101,13 @@ a:link{
     padding-top: -1%;
 }
 
+#message-input{
+    border: 1px solid #18bc9c;
+}
+#message-input:focus{
+    border: 2px solid #2c3e50;
+}
+/* 
 #profile > ul.li{
     border-bottom: none;
     list-style: none;
@@ -130,10 +117,4 @@ a:link{
     padding-left: 2%;
     padding-top: 1%;
     text-decoration: none;
-}
-
-input{
-    background-color: #add8e6;
-    color: #2038ec;
-    font-weight: 600;
-}
+} */

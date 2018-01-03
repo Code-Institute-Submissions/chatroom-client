@@ -24,7 +24,7 @@
                             <div>
                                 Your subscription is due to renew on {{ user.subscription_end | date: 'medium' }}
                             </div>
-                            <button class="btn btn-default" type="submit">Cancel</button>
+                            <button class="btn btn-primary" type="submit">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                                 <label>Phone Number</label>
                                 <input type="text" name="phone_number" class="form-control" data-ng-model="phone_number">
                             </div>
-                            <button type="submit" class="btn btn-default">
+                            <button type="submit" class="btn btn-primary">
                                 <span class="fa fa-cloud"></span> Update
                             </button>
                         </form>
@@ -63,10 +63,10 @@
             </div>
             <div class="panel panel-primary">
                 <div class="panel-body">
-                    <button class="btn btn-default" href="#" ng-click="logout()">
+                    <button class="btn btn-primary" href="#" ng-click="logout()">
                         <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
                     </button>
-                    <button type="submit" class="btn btn-default pull-right" ui-sref="rooms">
+                    <button type="submit" class="btn btn-primary pull-right" ui-sref="rooms">
                         <i class="fa fa-reply"></i> Back to Rooms
                     </button>
                 </div>
@@ -79,7 +79,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="panel-body">
-                        <button class="btn btn-default" ngf-select ng-model="picFile" accept="image/*">
+                        <button class="btn btn-primary" ngf-select ng-model="picFile" accept="image/*">
                             Select Picture</button>
                         <div ngf-drop ng-model="picFile" ngf-pattern="image/*" class="cropArea">
                             <ui-cropper image="picFile" area-type="circle" chargement="'Loading'" result-image="croppedProfileImage" canvas-scalemode="true"></ui-cropper>
@@ -87,7 +87,7 @@
                         <div>
                             <img ng-src="{{croppedProfileImage}}" />
                         </div>
-                        <button class="btn btn-default" style="margin-top:1%;" ng-click="upload(croppedProfileImage, picFile.name)">Submit</button>
+                        <button class="btn btn-primary" style="margin-top:1%;" ng-click="upload(croppedProfileImage, picFile.name)">Submit</button>
                         <span class="progress" ng-show="progress >= 0">
                             <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
                         </span>

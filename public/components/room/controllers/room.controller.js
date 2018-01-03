@@ -42,7 +42,7 @@ chatroom
         }
 
         $scope.onScroll = function (event, element) {
-            if (!$scope.fetchingMessages && element.scrollTop() === 0) {
+            if (!$scope.fetchingMessages && element[0].scrollTop === 0) {
                 $scope.loadRoom($scope.roomId);
                 console.log("Scroll Event: ", event);
             }
@@ -54,9 +54,14 @@ chatroom
             }
             $scope.fetchingMessages = true;
 
+            if (room_id !== $scope.roomId) {
+                debugger;
+                $cookies.put('roomId', room_id);
+                $scope.roomId = room_id;
+                $scope.messages = [];
+            }
+
             offset = $scope.messages.length;
-            $cookies.put('roomId', room_id);
-            $scope.roomId = room_id;
 
             RoomService.get('chatroom/get_room_messages/' + room_id,
                 {
@@ -119,7 +124,7 @@ chatroom
 
         function messageAddedSuccess(response) {
             console.log('message added', response.data);
-            
+
             $scope.message = createMessage();
 
             socket.emit('messages', {
@@ -189,6 +194,12 @@ chatroom
         function getUserRoomsFailure(response) {
             console.log(response);
         };
+
+        $scope.applyLocationMarker = function (room_id) {
+            if (room_id === parseInt($scope.roomId)) {
+                return 'fa fa-map-marker';
+            }
+        }
 
         $scope.loadRoom($scope.roomId);
         getUserRooms();

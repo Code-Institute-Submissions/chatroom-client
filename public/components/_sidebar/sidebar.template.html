@@ -1,14 +1,14 @@
-<div class="row">
+<div class="row navbar-default">
     <div class="col-md-12">
-        <ul class="nav nav-tabs navbar nav-justified">
-            <li>
-                <a class="nav-link" data-toggle="tab" href="#profile">
-                    <i class="material-icons">face</i>
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active">
+                <a class="nav-link" data-toggle="tab" href="#rooms">
+                    <i class="material-icons">store</i>
                 </a>
             </li>
             <li>
-                <a class="nav-link" data-toggle="tab" href="#rooms">
-                    <i class="material-icons">store</i>
+                <a class="nav-link" data-toggle="tab" href="#profile">
+                    <i class="material-icons">face</i>
                 </a>
             </li>
             <li>
@@ -18,64 +18,60 @@
             </li>
         </ul>
         <div class="tab-content">
-            <div id="profile" class="tab-pane fade in active">
-                <a href='#' ng-click='loadRoom(room.id)'>
-                </a>
-                <div id='profile-items'>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" ui-sref="profile">Profile</a>
-                        </li>
-                        <li>
-                            Subscription Details
-                        </li>
-                        <li>
-                            Rooms left to add on subscription plan
-                        </li>
-                    </ul>
+            <div id="rooms" class="tab-pane fade in active">
+                <div id="sidebar-items">
+                    <div class="container-fluid">
+                        <div class="col-md-12 btn btn-primary panel-body" ng-repeat="room in rooms track by room.id" id='room-list'>
+                            <a ng-click='loadRoom(room.id)'>
+                                <div class="col-md-2">
+                                    <span ng-class="applyLocationMarker(room.id)" aria-hidden="true"></span>
+                                </div>
+                                <div class="col-md-10 pull-right">
+                                    {{ room.name }}
+                                </div>
+                            </a>
+                        </div>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div id="rooms" class="tab-pane fade">
-                <ul class="nav flex-column">
-                    <li class="nav-item" ng-repeat="room in rooms track by room.id" id='room-list'>
-                        <a href='#' ng-click='loadRoom(room.id)'>
-                            {{ room.name }}
-                        </a>
-                    </li>
-                </ul>
+            <div id="profile" class="tab-pane fade">
+                <div id='sidebar-items'>
+                    <div class="container-fluid">
+                        <div class="col-md-12 btn btn-primary panel-body" style="text-align: center;">
+                            <a ui-sref="profile">Profile</a>
+                        </div>
+                        <div class="col-md-12 panel-body">
+                            <label>Email:</label> {{user.email}}
+                        </div>
+                        <div class="col-md-12 panel-body" ng-if="user.first_name">
+                            <label>First Name:</label> {{user.first_name}}
+                        </div>
+                        <div class="col-md-12 panel-body" ng-if="user.last_name">
+                            <label>Last Name:</label> {{user.last_name}}
+                        </div>
+                        <div class="col-md-12 panel-body" ng-if="user.is_subscribed">
+                            Subscription ends on {{ user.subscription_end | date: 'medium' }}
+                        </div>
+                        <div class="col-md-12 panel-body" ng-if="!user.is_subscribed">
+                            <small>
+                                <a class="nav-link" ui-sref="subscription">Sign up </a> to create rooms
+                            </small>
+                        </div>
+                        <div class="col-md-12 panel-body">
+                            Rooms left to add on subscription plan
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="messages" class="tab-pane fade">
-                <h3>Menu 1</h3>
-                <p>Some content in menu 1.</p>
+                <div id="sidebar-items">
+                    <div class="container-fluid">
+                        <div class="col-md-12 panel-body">
+                            Feature Not Yet Implemented
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<!-- 
-<ul class="nav flex-column">
-    <li class="nav-item">
-        <a class="nav-link active" ui-sref="profile">Profile</a>
-    </li>
-    <li ng-if="user.is_subscribed">
-        <a class="nav-link" ui-sref="addRoom">Add Room</a>
-    </li>
-    <li ng-if="!user.is_subscribed">
-        <small>
-            <a class="nav-link" ui-sref="subscription">Sign up </a> to create rooms
-        </small>
-    </li>
-    <li class="nav-item" ng-repeat="room in rooms track by room.id" id='room-list'>
-        <a href='#' ng-click='loadRoom(room.id)'>
-            <small>{{ room.name }}</small>
-        </a>
-    </li>
-    <li ng-if="!user.is_subscribed" class="nav-item">
-        <small>
-            <a ui-sref='subscription'>Sign up </a> to send private messages
-        </small>
-    </li>
-    <li ng-if="user.is_subscribed || user.data.is_superuser" class="nav-item">
-        <a class="nav-link" href="#">Messages</a>
-    </li>
-</ul> -->

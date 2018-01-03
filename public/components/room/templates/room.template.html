@@ -20,11 +20,11 @@
                                     alt="Generic placeholder image" />
                             </div>
                             <div class="media-body">
-                                <h6 ng-if="!user.first_name">
+                                <h6 ng-if="!view_message.user.first_name">
                                     <strong>{{view_message.user.username}}</strong>
                                     <small>{{view_message.date_added | date : "medium" }}</small>
                                 </h6>
-                                <h6 ng-if="user.first_name">
+                                <h6 ng-if="view_message.user.first_name">
                                     <strong>{{view_message.user.first_name}}</strong>
                                     <small>{{view_message.date_added | date : "medium" }}</small>
                                 </h6>
