@@ -84,7 +84,7 @@ chatroom
         $scope.userLogin = function () {
             AccountService.post('rest-auth/login/',
                 {
-                    'username': $scope.user.username,
+                    'username': $scope.user.email,
                     'password': $scope.user.password
                 },
                 loginSuccess,
@@ -112,7 +112,7 @@ chatroom
             var profile_path = $scope.picFile.name ? "/media/profile_images/" + $scope.picFile.name : "";
             AccountService.patch("account/update/" + $scope.user.id + '/',
                 {
-                    'username': $scope.user.email,
+                    'username': $scope.user.username,
                     'email': $scope.user.email,
                     'first_name': $scope.user.first_name ? $scope.first_name : "",
                     'last_name': $scope.user.last_name ? $scope.last_name : "",

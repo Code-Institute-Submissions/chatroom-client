@@ -13,7 +13,7 @@
             </li>
             <li>
                 <a class="nav-link" data-toggle="tab" href="#messages">
-                    <i class="material-icons">chat_bubble_outline</i>
+                        <i class="material-icons">contact_mail</i>
                 </a>
             </li>
         </ul>
@@ -21,6 +21,12 @@
             <div id="rooms" class="tab-pane fade in active">
                 <div id="sidebar-items">
                     <div class="container-fluid">
+                        <div class="col-md-6 btn btn-primary">
+                            <a>Search</a>
+                        </div>
+                        <div class="col-md-6 btn btn-primary">
+                            <a ui-sref="addRoom">Add Room </a>
+                        </div>
                         <div class="col-md-12 btn btn-primary panel-body" ng-repeat="room in rooms track by room.id" id='room-list'>
                             <a ng-click='loadRoom(room.id)'>
                                 <div class="col-md-2">
@@ -39,7 +45,12 @@
                 <div id='sidebar-items'>
                     <div class="container-fluid">
                         <div class="col-md-12 btn btn-primary panel-body" style="text-align: center;">
-                            <a ui-sref="profile">Profile</a>
+                            <div class="col-md-2">
+                                <i class="material-icons md-14">build</i>
+                            </div>
+                            <div class="col-md-10 pull-right">
+                                <a ui-sref="profile">{{user.username}}</a>
+                            </div>
                         </div>
                         <div class="col-md-12 panel-body">
                             <label>Email:</label> {{user.email}}
@@ -59,7 +70,7 @@
                             </small>
                         </div>
                         <div class="col-md-12 panel-body">
-                            Rooms left to add on subscription plan
+                            Joined Rooms: {{ user.rooms_joined }}/{{ user.room_limit }}
                         </div>
                     </div>
                 </div>
