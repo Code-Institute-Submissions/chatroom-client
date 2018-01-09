@@ -12,7 +12,7 @@ a:hover{
 }
 
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
     height: 20px
 }
 
@@ -22,12 +22,12 @@ a:hover{
 }
  
 ::-webkit-scrollbar-thumb {
-    background: #2c3e50; 
+    background: #FFA500; 
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #2c3e50; 
+    background: #FFFFFF; 
 }
 
 
@@ -54,13 +54,14 @@ a:hover{
 
 #cropping-area{
     border-radius: 50%;
-    border-color: 1px #2c3e50 solid !important;
+    border-color: 1px #FFFFFF solid !important;
 }
 
 #image-thumbnail{
     width:64px;
     height: 64px;
     border-radius: 50%;
+    border: 1px solid #FFA500;
     margin-left: 1%;
 }
 
@@ -69,7 +70,7 @@ a:hover{
     margin-right: auto;
     height: 70%;
     width: 70%;
-    border: 1px solid #2c3e50 !important;
+    border: 1px solid #FFFFFF !important;
     border-radius: 50%;
 }
 
@@ -78,7 +79,7 @@ a:hover{
     display: block;
     display: block;
     text-transform: uppercase;
-    color: #18bc9c;
+    color: #ffa500;
     height: 5% !important;
     font-size: 1.1em; 
     font-weight: 500;
@@ -102,10 +103,10 @@ a:hover{
 }
 
 #message-input{
-    border: 1px solid #2c3e50;
+    border: 1px solid #ffa500;
 }
 #message-input:focus{
-    border: 2px solid #2c3e50;
+    border: 2px solid #ffa500;
 }
 
 .material-icons.md-14{

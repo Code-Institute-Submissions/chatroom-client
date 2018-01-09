@@ -43,16 +43,20 @@
                                 <input type="text" name="name" class="form-control" data-ng-model="user.username">
                             </div>
                             <div class="form-group">
+                                <label>Display Name</label>
+                                <input type="text" name="display_name" class="form-control" data-ng-model="user.display_name">
+                            </div>
+                            <div class="form-group">
                                 <label>First Name</label>
-                                <input type="text" name="first_name" class="form-control" data-ng-model="first_name">
+                                <input type="text" name="first_name" class="form-control" data-ng-model="user.first_name">
                             </div>
                             <div class="form-group">
                                 <label>Last Name</label>
-                                <input type="text" name="last_name" class="form-control" data-ng-model="last_name">
+                                <input type="text" name="last_name" class="form-control" data-ng-model="user.last_name">
                             </div>
                             <div class="form-group">
                                 <label>Phone Number</label>
-                                <input type="text" name="phone_number" class="form-control" data-ng-model="phone_number">
+                                <input type="text" name="phone_number" class="form-control" data-ng-model="user.phone_number">
                             </div>
                             <button type="submit" class="btn btn-primary">
                                 <span class="fa fa-cloud"></span> Update
@@ -88,9 +92,6 @@
                             <img ng-src="{{croppedProfileImage}}" />
                         </div>
                         <button class="btn btn-primary" style="margin-top:1%;" ng-click="upload(croppedProfileImage, picFile.name)">Submit</button>
-                        <span class="progress" ng-show="progress >= 0">
-                            <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-                        </span>
                         <span ng-show="result">Upload Successful</span>
                         <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
                     </div>

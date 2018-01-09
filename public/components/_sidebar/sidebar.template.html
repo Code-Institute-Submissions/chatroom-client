@@ -22,7 +22,7 @@
                 <div id="sidebar-items">
                     <div class="container-fluid">
                         <div class="col-md-6 btn btn-primary">
-                            <a>Search</a>
+                            <a ui-sref='room_search'>Search</a>
                         </div>
                         <div class="col-md-6 btn btn-primary">
                             <a ui-sref="addRoom">Add Room </a>
@@ -49,7 +49,7 @@
                                 <i class="material-icons md-14">build</i>
                             </div>
                             <div class="col-md-10 pull-right">
-                                <a ui-sref="profile">{{user.username}}</a>
+                                <a ui-sref="profile">{{ user.display_name }}</a>
                             </div>
                         </div>
                         <div class="col-md-12 panel-body">

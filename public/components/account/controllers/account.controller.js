@@ -84,7 +84,7 @@ chatroom
         $scope.userLogin = function () {
             AccountService.post('rest-auth/login/',
                 {
-                    'username': $scope.user.email,
+                    'username': $scope.user.username,
                     'password': $scope.user.password
                 },
                 loginSuccess,
@@ -109,14 +109,15 @@ chatroom
         };
 
         $scope.updateUserDetails = function () {
-            var profile_path = $scope.picFile.name ? "/media/profile_images/" + $scope.picFile.name : "";
+            debugger;
+            var profile_path = $scope.picFile ? "/media/profile_images/" + $scope.picFile.name : $scope.user.profile_picture_path;
             AccountService.patch("account/update/" + $scope.user.id + '/',
                 {
                     'username': $scope.user.username,
                     'email': $scope.user.email,
-                    'first_name': $scope.user.first_name ? $scope.first_name : "",
-                    'last_name': $scope.user.last_name ? $scope.last_name : "",
-                    'phone_number': $scope.phone_number,
+                    'first_name': $scope.user.first_name,
+                    'last_name': $scope.user.last_name,
+                    'phone_number': $scope.user.phone_number,
                     'profile_picture_path': profile_path
                 },
                 updateDetailsSuccess,
@@ -163,7 +164,8 @@ chatroom
                     'username': $scope.user.email,
                     'email': $scope.user.email,
                     'password1': $scope.user.password,
-                    'password2': $scope.user.password2
+                    'password2': $scope.user.password2,
+                    "display_name": $scope.user.display_name
                 },
                 registerSuccess,
                 registerFailure)

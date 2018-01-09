@@ -41,6 +41,11 @@ angular
         url: '/password_reset',
         templateUrl: 'public/components/account/templates/password-reset.template.html',
         controller: 'AccountController'
+    }).state({
+        name: 'room_search',
+        url: '/room_search',
+        templateUrl: 'public/components/searching/templates/search.template.html',
+        controller: 'SearchController'
     });
 
     $urlRouterProvider.otherwise('/');

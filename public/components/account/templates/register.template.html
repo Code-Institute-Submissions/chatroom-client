@@ -7,9 +7,8 @@
                 <p data-ng-show="RegisterForm.email.$pristine" class="help-block">Your email address is required</p>
             </div>
             <div class="form-group">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" data-ng-model="user.username" required>
-                <p data-ng-show="RegisterForm.email.$pristine" class="help-block">Please select a username</p>
+                <label for="user.display_name">Display Name</label>
+                <input type="text" class="form-control" ng-model="user.display_name" aria-describedby="Display Name" />
             </div>
             <div class="form-group">
                 <label>Password</label>
