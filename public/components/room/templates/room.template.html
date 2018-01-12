@@ -5,7 +5,7 @@
         </div>
         <div class="col-md-9 col-md-offset-3" id="message-viewport" style="height: 85%;" scroll="onScroll">
             <div class="col-md-12">
-                <div class="well" id="messages-content">
+                <div id="messages-content">
                     <div id="loading-display" class="text-center">
                         <a ng-click="loadRoom(roomId)" ng-if="!fetchingMessages">
                             <small>View Historic</small>
@@ -33,7 +33,7 @@
         </div>
         <div class="col-md-9 col-md-offset-3" id="message-section" style="margin-top: 5%;">
             <form class="form" name="MessageForm">
-                <input type="text" id="message-input" class="form-control" placeholder="Enter Your Message" my-enter="sendMessage()" ng-model="inputMessage"
+                <input type="text" id="message-input" class="form-control" placeholder="Enter Your Message" enter="sendMessage()" ng-model="inputMessage"
                 />
             </form>
         </div>

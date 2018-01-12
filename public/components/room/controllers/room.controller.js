@@ -157,7 +157,7 @@ chatroom
         function roomAddedSuccess(response) {
             console.log('room added success', response);
 
-            RoomService.post('chatroom/add_user_to_room/',
+            RoomService.post('chatroom/add_to_room/',
                 {
                     'user': $scope.user.id,
                     'room': response.data.id
