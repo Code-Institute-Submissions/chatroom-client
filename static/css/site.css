@@ -1,8 +1,13 @@
 html, body, .container-fluid, .row {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Mukta Mahee', sans-serif;
     height: 100%;
     overflow-x: hidden;
 }
+
+.rock-face{
+    font-family: 'Rock Salt', cursive;
+}
+
 a:link{
     text-decoration: none;
 }
@@ -22,7 +27,7 @@ a:hover{
 }
  
 ::-webkit-scrollbar-thumb {
-    background: #FFA500; 
+    background: #006494; 
     border-radius: 10px;
 }
 
@@ -61,7 +66,7 @@ a:hover{
     width:64px;
     height: 64px;
     border-radius: 50%;
-    border: 1px solid #FFA500;
+    border: 1px solid #006494;
     margin-left: 1%;
 }
 
@@ -79,12 +84,22 @@ a:hover{
     display: block;
     display: block;
     text-transform: uppercase;
-    color: #ffa500;
+    color: #006494;
     height: 5% !important;
-    font-size: 1.1em; 
-    font-weight: 500;
+    font-size: 1em; 
+    font-weight: 600;
     padding: 2%;
 } 
+
+#message-object{
+    padding:0.5%;
+    margin-top: 0;
+    margin-bottom: 1%;
+}
+#message-object:hover{
+    cursor: pointer;
+    background-color: beige;
+}
 
 #message-viewport{
     overflow-y: scroll;
@@ -103,10 +118,10 @@ a:hover{
 }
 
 #message-input{
-    border: 1px solid #ffa500;
+    border: 1px solid #006494;
 }
 #message-input:focus{
-    border: 2px solid #ffa500;
+    border: 2px solid #006494;
 }
 
 .material-icons.md-14{

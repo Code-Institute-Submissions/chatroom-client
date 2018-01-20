@@ -14,7 +14,8 @@
     "ui-cropper": "^1.0.6",
     "ng-file-upload": "^12.2.13",
     "ngInfiniteScroll": "1.0.0",
-    "angular-advanced-searchbox": "^3.0.0"
+    "angular-advanced-searchbox": "^3.0.0",
+    "angular-loading-bar": "^0.9.0"
   },
   "resolutions": {
     "angular": "1.6.8"

@@ -5,7 +5,7 @@ chatroom
         $scope.user = $cookies.getObject('user');
 
         $scope.roomSearch = function () {
-            SearchService.get('chatroom/get_rooms/',
+            SearchService.get('get_rooms/',
                 {
                     'params': {
                         'searchTerm': $scope.searchTerm,
@@ -27,7 +27,7 @@ chatroom
         }
 
         $scope.joinRoom = function (room_id) {
-            SearchService.post('chatroom/add_to_room/',
+            SearchService.post('add_to_room/',
                 {
                     'user': $scope.user.id,
                     'room': room_id

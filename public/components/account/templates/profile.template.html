@@ -6,8 +6,12 @@
                     Profile Picture
                 </div>
                 <div ng-if="user.profile_picture_path" class="panel-body">
-                    <img ng-if="!user.profile_picture_path" class="mr-3" src="http://via.placeholder.com/300x300" />
-                    <img ng-if="user.profile_picture_path" ng-src="{{user.profile_picture_path}}" class="img-responsive" id="profile-image" alt="Generic placeholder image" />
+                    <img ng-if="user.profile_picture_path" ng-src="{{user.profile_picture_path}}" 
+                        class="img-responsive" id="profile-image" alt="Profile image" />
+                </div>
+                <div ng-if="!user.profile_picture_path" class="panel-body">
+                    <img ng-if="!user.profile_picture_path" class="img-responsive" id="profile-image" 
+                        ng-src="/media/generic_profile_picture.jpg" alt="Generic placeholder image"/>
                 </div>
             </div>
             <div class="panel panel-primary">
@@ -24,7 +28,7 @@
                             <div>
                                 Your subscription is due to renew on {{ user.subscription_end | date: 'medium' }}
                             </div>
-                            <button class="btn btn-primary" type="submit">Cancel</button>
+                            <button class="btn btn-primary pull-right" type="submit">Cancel</button>
                         </div>
                     </div>
                 </div>

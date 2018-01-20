@@ -4,4 +4,5 @@ var chatroom = angular.module("chatroom", []);
 
 angular
     .module('ChatroomApplication', ['appRoutes','chatroom', 'ngResource', 
-        'ui.bootstrap', 'angularPayments', 'ngCookies', 'uiCropper', 'ngFileUpload', 'angular-advanced-searchbox']);
+        'ui.bootstrap', 'angularPayments', 'ngCookies', 'uiCropper', 'ngFileUpload',
+        'angular-loading-bar']);

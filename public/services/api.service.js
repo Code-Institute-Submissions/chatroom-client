@@ -1,11 +1,13 @@
 chatroom
     .factory('ApiService', function($http){
-        var ApiService = function() {
-            var applicationUrl = 'http://localhost:8000/v1';
+        var ApiService = function(serviceEndpoint) {
+            debugger;
+            var applicationUrl = 'http://localhost:8000/v1/' + serviceEndpoint;
 
             function get(endpoint, data, success, failure){
                 var url = applicationUrl.concat('/').concat(endpoint);
-               
+                console.log("Test Api:", url);
+
                 return $http.get(url, data)
                     .then(function (result) {
                         success(result);

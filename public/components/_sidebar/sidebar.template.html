@@ -1,5 +1,6 @@
+
 <div class="row navbar-default">
-    <div class="col-md-12">
+    <div class="col-md-12 col-sm-12">
         <ul class="nav nav-tabs nav-justified">
             <li class="active">
                 <a class="nav-link" data-toggle="tab" href="#rooms">
@@ -21,13 +22,13 @@
             <div id="rooms" class="tab-pane fade in active">
                 <div id="sidebar-items">
                     <div class="container-fluid">
-                        <div class="col-md-6 btn btn-primary">
-                            <a ui-sref='room_search'>Search</a>
+                        <div class="col-md-6 col-sm-12 btn btn-primary">
+                            <a ui-sref="room_search">Search</a>
                         </div>
-                        <div class="col-md-6 btn btn-primary">
+                        <div class="col-md-6 col-sm-12 btn btn-primary">
                             <a ui-sref="addRoom">Add Room </a>
                         </div>
-                        <div class="col-md-12 btn btn-primary panel-body" ng-repeat="room in rooms track by room.id" id='room-list'>
+                        <div class="col-md-12 col-sm-12 btn btn-primary panel-body" ng-repeat="room in rooms track by room.id" id='room-list'>
                             <a ng-click='loadRoom(room.id)'>
                                 <div class="col-md-2">
                                     <span ng-class="applyLocationMarker(room.id)" aria-hidden="true"></span>
@@ -44,32 +45,32 @@
             <div id="profile" class="tab-pane fade">
                 <div id='sidebar-items'>
                     <div class="container-fluid">
-                        <div class="col-md-12 btn btn-primary panel-body" style="text-align: center;">
+                        <div class="col-md-12 col-sm-12 btn btn-primary panel-body" style="text-align: center;">
                             <div class="col-md-2">
                                 <i class="material-icons md-14">build</i>
                             </div>
                             <div class="col-md-10 pull-right">
-                                <a ui-sref="profile">{{ user.display_name }}</a>
+                                <a ui-sref="profile">{{user.username}}</a>
                             </div>
                         </div>
-                        <div class="col-md-12 panel-body">
+                        <div class="col-md-12 col-sm-12 col-sm-12 panel-body">
                             <label>Email:</label> {{user.email}}
                         </div>
-                        <div class="col-md-12 panel-body" ng-if="user.first_name">
+                        <div class="col-md-12 col-sm-12 panel-body" ng-if="user.first_name">
                             <label>First Name:</label> {{user.first_name}}
                         </div>
-                        <div class="col-md-12 panel-body" ng-if="user.last_name">
+                        <div class="col-md-12 col-sm-12 panel-body" ng-if="user.last_name">
                             <label>Last Name:</label> {{user.last_name}}
                         </div>
-                        <div class="col-md-12 panel-body" ng-if="user.is_subscribed">
+                        <div class="col-md-12 col-sm-12 panel-body" ng-if="user.is_subscribed">
                             Subscription ends on {{ user.subscription_end | date: 'medium' }}
                         </div>
-                        <div class="col-md-12 panel-body" ng-if="!user.is_subscribed">
+                        <div class="col-md-12 col-sm-12 panel-body" ng-if="!user.is_subscribed">
                             <small>
                                 <a class="nav-link" ui-sref="subscription">Sign up </a> to create rooms
                             </small>
                         </div>
-                        <div class="col-md-12 panel-body">
+                        <div class="col-md-12 col-sm-12 panel-body">
                             Joined Rooms: {{ user.rooms_joined }}/{{ user.room_limit }}
                         </div>
                     </div>
@@ -78,8 +79,8 @@
             <div id="messages" class="tab-pane fade">
                 <div id="sidebar-items">
                     <div class="container-fluid">
-                        <div class="col-md-12 panel-body">
-                            Feature Not Yet Implemented
+                        <div class="col-md-12 col-sm-12 panel-body">
+                            Feature still in development
                         </div>
                     </div>
                 </div>

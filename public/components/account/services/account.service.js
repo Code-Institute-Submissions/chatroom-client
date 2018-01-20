@@ -1,5 +1,4 @@
 chatroom
     .factory('AccountService', function(ApiService) {
-        return ApiService();
-
+        return ApiService('account');
     });

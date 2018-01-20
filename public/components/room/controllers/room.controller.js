@@ -8,9 +8,11 @@ chatroom
         $scope.user = $cookies.getObject('user');
         $scope.roomId = $cookies.get('roomId');
 
+        $scope.date_now = Date();
+
         $scope.messages = [];
         $scope.message = [];
-        $scope.rooms = {};
+        $scope.rooms = [];
         $scope.newRoom = {};
         $scope.inputMessage = "";
 
@@ -43,27 +45,29 @@ chatroom
 
         $scope.onScroll = function (event, element) {
             if (!$scope.fetchingMessages && element[0].scrollTop === 0) {
-                $scope.loadRoom($scope.roomId);
+                $scope.loadRoom($scope.roomId, false);
                 console.log("Scroll Event: ", event);
             }
         }
 
-        $scope.loadRoom = function (room_id) {
+        $scope.loadRoom = function (room_id, onload) {
+            if (onload) {
+                applyLoadingClasses('Loading');
+            };
+
             if ($scope.fetchingMessages) {
                 return;
             }
             $scope.fetchingMessages = true;
 
             if (room_id !== $scope.roomId) {
-                debugger;
                 $cookies.put('roomId', room_id);
                 $scope.roomId = room_id;
                 $scope.messages = [];
             }
 
             offset = $scope.messages.length;
-
-            RoomService.get('chatroom/get_room_messages/' + room_id,
+            RoomService.get('room_messages/' + room_id,
                 {
                     'params': {
                         'offset': offset,
@@ -75,30 +79,34 @@ chatroom
         };
 
         function loadRoomSuccess(response) {
+            console.log("State", $state);
             var initialLoad = $scope.messages.length == 0 ? true : false;
 
             Object.values(response.data).forEach(data => {
                 $scope.messages.push(data);
             });
-            if (initialLoad) {
-                $timeout(function () {
-                    var scrollHeight = $('#message-viewport')[0].scrollHeight;
-                    $('#message-viewport')[0].scrollTop = scrollHeight;
-                });
-            }
-
-            console.log($('#message-viewport'));
+            console.log("User", $scope.user);
 
             $scope.fetchingMessages = false;
 
             socket.emit('join', $scope.roomId, function () {
                 console.log('joined: ' + $scope.room_id);
             });
+            setTimeout(function () {
+                applyLoadingClasses('Loaded');
+                if (initialLoad && $state.current.name == 'rooms') {
+                    $timeout(function () {
+                        var scrollHeight = $('#message-viewport')[0].scrollHeight;
+                        $('#message-viewport')[0].scrollTop = scrollHeight;
+                    });
+                }
+            }, 3000);
         };
 
         function loadRoomFailure(response) {
             $scope.fetchingMessages = false;
             console.log('message failure', response.data);
+            applyLoadingClasses('Loaded');
         };
 
         function createMessage() {
@@ -111,7 +119,7 @@ chatroom
         }
 
         $scope.sendMessage = function () {
-            RoomService.post('chatroom/write_message/',
+            RoomService.post('write_message/',
                 {
                     'user': $scope.user.id,
                     'message': $scope.inputMessage,
@@ -144,20 +152,20 @@ chatroom
             console.log('message added failure', response);
         };
 
-        $scope.addRoom = function () {
-            RoomService.post('chatroom/add_room/',
+        $scope.addPublicRoom = function () {
+            RoomService.post('add/',
                 {
                     'name': $scope.newRoom.name,
-                    'tag': $scope.newRoom.tag
+                    'tag': $scope.newRoom.tag,
+                    'type': 'public'
                 },
-                roomAddedSuccess,
+                publicRoomAddedSuccess,
                 roomAddedFailure)
         };
 
-        function roomAddedSuccess(response) {
+        function publicRoomAddedSuccess(response) {
             console.log('room added success', response);
-
-            RoomService.post('chatroom/add_to_room/',
+            RoomService.post('add_to_room/',
                 {
                     'user': $scope.user.id,
                     'room': response.data.id
@@ -168,6 +176,11 @@ chatroom
 
         function userRoomSuccess(response) {
             console.log('added user room success', response);
+
+            var user = $cookies.getObject('user');
+            user.rooms_joined += 1;
+            $cookies.putObject('user', user);
+            debugger;
             $state.go('rooms');
         };
 
@@ -180,8 +193,12 @@ chatroom
         };
 
         function getUserRooms() {
-            RoomService.get('chatroom/get_user_rooms/' + $scope.user.id,
-                null,
+            RoomService.get('user_rooms/',
+                {
+                    'params': {
+                        "user_id": $scope.user.id
+                    }
+                },
                 getUserRoomsSuccess,
                 getUserRoomsFailure);
         };
@@ -201,6 +218,30 @@ chatroom
             }
         }
 
-        $scope.loadRoom($scope.roomId);
+        $scope.canSendDirectMessages = function (userId, isSubscribed) {
+            return $scope.user.id !== userId && isSubscribed;
+        }
+
+        function applyLoadingClasses(transition) {
+            switch (transition) {
+                case 'Loading':
+                    $('#loading-screen').removeClass('hidden');
+                    $('#loaded-screen').addClass('hidden');
+                    break;
+                case 'Loaded':
+                    debugger;
+                    $('#loading-screen').fadeOut('slow', function(){
+                        $('#loading-screen').addClass('hidden');
+                        $('#loaded-screen').removeClass('hidden');
+                    });
+                    break;
+                default:
+                    // When fetching messages on scroll. 
+                    // Don't want to apply any classes
+                    break;
+            }
+        }
+
+        $scope.loadRoom($scope.roomId, true);
         getUserRooms();
     });

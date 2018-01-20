@@ -1,5 +1,5 @@
 chatroom
-    .controller('AccountController', function ($scope, $state, $cookies, $timeout, AccountService, Upload) {
+    .controller('AccountController', function ($scope, $state, $cookies, $timeout, AccountService, RoomService, RestauthService, Upload) {
         console.log("Accounts Controller Loaded");
 
         if (!$scope.user) {
@@ -30,21 +30,6 @@ chatroom
         };
         angular.element(document.querySelector('#fileInput')).on('change', handleFileSelect);
 
-        // $scope.upload = function (file) {
-        //     debugger;
-        //     Upload.upload({
-        //         url: 'upload/',
-        //         data: {file: file, 'username': $scope.username}
-        //     }).then(function (resp) {
-        //         $scope.updateUserDetails();
-        //         console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-        //     }, function (resp) {
-        //         console.log('Error status: ' + resp.status);
-        //     }, function (evt) {
-        //         var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-        //         console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-        //     });
-        // };
         $scope.upload = function (dataUrl, name) {
             Upload.upload({
                 url: 'upload/',
@@ -61,28 +46,8 @@ chatroom
             });
         }
 
-        $scope.getUser = function (user_id) {
-            AccountService.get('account/user/' + user_id + '/',
-                null,
-                getUserSuccess,
-                getUserFailure);
-        };
-
-        function getUserSuccess(response) {
-            console.log('get user success', response.data);
-            $cookies.putObject('user', response.data);
-
-            setTimeout(function () {
-                $state.go('rooms');
-            }, 1500);
-        };
-
-        function getUserFailure(data) {
-            console.log(data);
-        };
-
         $scope.userLogin = function () {
-            AccountService.post('rest-auth/login/',
+            RestauthService.post('login/',
                 {
                     'username': $scope.user.username,
                     'password': $scope.user.password
@@ -108,13 +73,34 @@ chatroom
             }, 3000);
         };
 
+        $scope.getUser = function (user_id) {
+            AccountService.get('user/' + user_id + '/',
+                null,
+                getUserSuccess,
+                getUserFailure);
+        };
+
+        function getUserSuccess(response) {
+            console.log('get user success', response.data);
+            $cookies.putObject('user', response.data);
+
+            setTimeout(function () {
+                $state.go('rooms');
+            }, 1500);
+        };
+
+        function getUserFailure(data) {
+            console.log(data);
+        };
+
         $scope.updateUserDetails = function () {
             debugger;
             var profile_path = $scope.picFile ? "/media/profile_images/" + $scope.picFile.name : $scope.user.profile_picture_path;
-            AccountService.patch("account/update/" + $scope.user.id + '/',
+            AccountService.patch("update/" + $scope.user.id + '/',
                 {
                     'username': $scope.user.username,
                     'email': $scope.user.email,
+                    'display_name': $scope.user.display_name,
                     'first_name': $scope.user.first_name,
                     'last_name': $scope.user.last_name,
                     'phone_number': $scope.user.phone_number,
@@ -131,7 +117,7 @@ chatroom
                 updateDetailsFailure();
             } else {
                 $scope.token_id = result.id;
-                AccountService.put("account/subscription/",
+                AccountService.put("subscribe/",
                     {
                         'user': {
                             'email': $scope.user.email,
@@ -159,7 +145,7 @@ chatroom
         };
 
         $scope.registerUser = function () {
-            AccountService.post('rest-auth/registration/',
+            RestauthService.post('registration/',
                 {
                     'username': $scope.user.email,
                     'email': $scope.user.email,
@@ -175,7 +161,7 @@ chatroom
             console.log('register success', response.data);
 
             // response from registration success returns a user: id
-            AccountService.post('chatroom/add_to_room/',
+            RoomService.post('add_to_room/',
                 {
                     'user': response.data.user,
                     'room': 1
@@ -204,7 +190,7 @@ chatroom
         };
 
         $scope.logout = function () {
-            AccountService.post('rest-auth/logout/',
+            RestauthService.post('logout/',
                 null,
                 logoutSuccess,
                 logoutFailure);
@@ -222,7 +208,7 @@ chatroom
         };
 
         $scope.resetPassword = function () {
-            AccountService.post('rest-auth/password/change/',
+            RestauthService.post('password/change/',
                 {
                     'new_password1': $scope.new_password1,
                     'new_password2': $scope.new_password2
