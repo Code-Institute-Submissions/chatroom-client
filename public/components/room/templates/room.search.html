@@ -1,0 +1,36 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <h3 class="text-center">Search Rooms</h3>
+            <form name="SearchForm" data-ng-submit="roomSearch()" novalidate>
+                <div class="form-group">
+                    <input class="form-control" type="text" ng-model="searchTerm" placeholder="Search By Room Name or Tag" required/>
+                    <p data-ng-show="SearchForm.email.$pristine" class="help-block">Provide a term to start your search</p>
+                    <p class="alert alert-success hide" id="success-messages">{{ message }}</p>
+                    <p class="alert alert-danger hide" id="error-messages">{{ message }}</p>
+                </div>
+            </form>
+            <div class="card">
+                <div class="card-body">
+                    <table class="table-responsive table-striped table-justified table-hover" style="width:100%;">
+                        <tbody>
+                            <tr ng-repeat="room in searchableRooms track by room.id">
+                                <td class="card-title">
+                                    <a class="btn text-center" id="room_{{room.id}}" ng-click="joinRoom(room.id)" style="width:50%;">
+                                        {{room.name}}
+                                    </a>
+                                </td>
+                                <td class="card-subtitle mr-2 text-muted">{{room.tag}}</td>
+                            </tr>
+                            <tr ng-if="searchableRooms.length == 0" class="alert alert-success text-center">
+                                <td style="color: #006494;">
+                                    <h4>Nothing to see here (-_-)</h4>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

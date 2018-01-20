@@ -94,7 +94,6 @@ chatroom
         };
 
         $scope.updateUserDetails = function () {
-            debugger;
             var profile_path = $scope.picFile ? "/media/profile_images/" + $scope.picFile.name : $scope.user.profile_picture_path;
             AccountService.patch("update/" + $scope.user.id + '/',
                 {

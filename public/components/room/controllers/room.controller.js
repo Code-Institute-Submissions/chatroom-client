@@ -92,15 +92,16 @@ chatroom
             socket.emit('join', $scope.roomId, function () {
                 console.log('joined: ' + $scope.room_id);
             });
+            applyLoadingClasses('Loaded');
             setTimeout(function () {
-                applyLoadingClasses('Loaded');
                 if (initialLoad && $state.current.name == 'rooms') {
                     $timeout(function () {
                         var scrollHeight = $('#message-viewport')[0].scrollHeight;
                         $('#message-viewport')[0].scrollTop = scrollHeight;
                     });
+                    
                 }
-            }, 3000);
+            }, 1000);
         };
 
         function loadRoomFailure(response) {
@@ -180,7 +181,6 @@ chatroom
             var user = $cookies.getObject('user');
             user.rooms_joined += 1;
             $cookies.putObject('user', user);
-            debugger;
             $state.go('rooms');
         };
 
@@ -229,7 +229,6 @@ chatroom
                     $('#loaded-screen').addClass('hidden');
                     break;
                 case 'Loaded':
-                    debugger;
                     $('#loading-screen').fadeOut('slow', function(){
                         $('#loading-screen').addClass('hidden');
                         $('#loaded-screen').removeClass('hidden');

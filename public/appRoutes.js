@@ -17,35 +17,20 @@ angular
         templateUrl: 'public/components/account/templates/register.template.html',
         controller: 'AccountController'
     }).state({
-        name: 'profile',
-        url: '/profile',
-        templateUrl: 'public/components/account/templates/profile.template.html',
-        controller: 'AccountController'
-    }).state({
         name: 'rooms',
         url: '/user_rooms',
         templateUrl: 'public/components/room/templates/room.template.html',
         controller: 'RoomController'
-    }).state({
-        name: 'addRoom',
-        url: '/addRoom',
-        templateUrl: 'public/components/room/templates/addRoom.template.html',
-        controller: 'RoomController'
-    }).state({
-        name: 'subscription',
-        url: '/subscription',
-        templateUrl: 'public/components/account/templates/subscription.template.html',
-        controller: 'AccountController'
     }).state({
         name: 'reset',
         url: '/password_reset',
         templateUrl: 'public/components/account/templates/password-reset.template.html',
         controller: 'AccountController'
     }).state({
-        name: 'room_search',
-        url: '/room_search',
-        templateUrl: 'public/components/searching/templates/search.template.html',
-        controller: 'SearchController'
+        name: 'menu',
+        url: '/menu',
+        templateUrl: 'public/components/menu/templates/menu.index.html',
+        controller: 'AccountController'
     });
 
     $urlRouterProvider.otherwise('/');

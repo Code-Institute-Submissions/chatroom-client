@@ -1,6 +1,6 @@
 <div class="row">
     <div class="container-fluid" id="loaded-screen">
-        <div class="col-md-2 sidebar" >
+        <div class="col-md-2 sidebar">
             <sidebar></sidebar>
         </div>
         <div class="col-md-10 col-md-offset-2 col-sm-12" id="message-viewport" style="height: 85%;" scroll="onScroll">
@@ -10,47 +10,41 @@
                         <a ng-click="loadRoom(roomId)" ng-if="!fetchingMessages">
                             <small>View Historic</small>
                         </a>
-                        <a ng-show="fetchingMessages">Fetching
+                        <a ng-show="fetchingMessages" style="font-size: 1.2em;">
+                            Fetching
                             <span class="fa fa-circle-o-notch fa-spin"></span>
                         </a>
                     </div>
                     <div class="media" id="message-object" ng-repeat="view_message in messages | orderBy: 'id'">
-                        <div class="dropup">
-                            <a class="dropdown-toggle" data-toggle="collapse" data-target="#message-{{view_message.id}}" aria-haspopup="true" aria-expanded="false"
-                                style="z-index: -1;">
-                                <div class="media-left media-middle">
-                                    <img ng-if="!view_message.user.profile_picture_path" class="d-flex align-self-center mr-3" src="http://via.placeholder.com/64X64"
-                                    />
-                                    <img id="image-thumbnail" ng-if="view_message.user.profile_picture_path" class="d-flex align-self-center mr-3" id="image-thumbnail"
-                                        ng-src="{{view_message.user.profile_picture_path}}" alt="Generic placeholder image" />
-                                </div>
+                        <div class="col-md-12 col-sm-12" ng-if="view_message.user.id !== user.id" id="other-messages">
+                            <div class="media-left media-middle">
+                                <img id="image-thumbnail" class="d-flex align-self-center mr-3" id="image-thumbnail" ng-src="{{view_message.user.profile_picture_path}}"
+                                    alt="Generic placeholder image" />
+                            </div>
+                            <div class="media-body">
+                                <h6>
+                                    <strong>{{view_message.user.display_name}}</strong>
+                                    <small>{{view_message.date_added | date : "medium" }}</small>
+                                </h6>
+                                <p>{{ view_message.message }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12" ng-if="view_message.user.id === user.id" id="user-message">
+                            <div class="media">
                                 <div class="media-body">
-                                    <h6>
+                                    <h6 style="text-align: right;">
+                                        <small  style="padding-left: 0.5%;">{{view_message.date_added | date : "medium" }}</small>
                                         <strong>{{view_message.user.display_name}}</strong>
-                                        <small>{{view_message.date_added | date : "medium" }}</small>
                                     </h6>
-                                    <p>{{ view_message.message }}</p>
+                                    <p style="text-align: right;">{{ view_message.message }}</p>
                                 </div>
-
-                                <form id="message-{{view_message.id}}" class="collapse p-4" style="z-index: 5;">
-                                    <div class="card">
-                                        <div class="card-block">
-                                            <h4 class="card-title">
-                                                {{view_message.user.display_name}}
-                                            </h4>
-                                            <div class="form-group">
-                                                <label class="card-subtitle">Name:</label>
-                                                {{view_message.user.first_name}} {{view_message.user.last_name}}
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="card-subtitle">Phone Number:</label>
-                                                {{ view_message.user.phone_number }}
-                                            </div>
-                                        </div>
-                                        <a ng-if="user.id === view_message.user.id" type="submit" class="btn" ui-sref="profile">Edit Profile</a>
+                                <div class="media-left" style="padding-left: 1%;">
+                                    <div class="media-left media-middle">
+                                        <img id="image-thumbnail" class="d-flex align-self-center mr-3" id="image-thumbnail" ng-src="{{view_message.user.profile_picture_path}}"
+                                            alt="Generic placeholder image" />
                                     </div>
-                                </form>
-                            </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="media" id="message-object" ng-if="messages.length === 0">
@@ -74,7 +68,7 @@
     </div>
     <div class="container-fluid hidden" id="loading-screen">
         <div class="col-md-2 sidebar">
-            
+
         </div>
         <div class="col-md-10 col-md-offset-2" id="message-viewport">
             <!-- <img class="img-responsive" style="margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; opacity: 0.8;" src="/media/loading_image.jpg"> -->
@@ -88,8 +82,8 @@
                 <div class="sk-cube sk-cube7"></div>
                 <div class="sk-cube sk-cube8"></div>
                 <div class="sk-cube sk-cube9"></div>
-              </div>
-              <h4 class="text-center rock-face">Shouldn't be too long now.</h4>
+            </div>
+            <h4 class="text-center rock-face">Shouldn't be too long now.</h4>
         </div>
     </div>
 </div>

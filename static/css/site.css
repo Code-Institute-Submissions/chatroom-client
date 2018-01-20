@@ -35,8 +35,6 @@ a:hover{
     background: #FFFFFF; 
 }
 
-
-  
   @media (min-width: 992px) {
     .sidebar {
       position: fixed;
@@ -79,15 +77,13 @@ a:hover{
     border-radius: 50%;
 }
 
-#sidebar-items > div > div {    
+.sidebar-items > div > div {    
     text-align: left;
-    display: block;
     display: block;
     text-transform: uppercase;
     color: #006494;
-    height: 5% !important;
+    height: 3% !important;
     font-size: 1em; 
-    font-weight: 600;
     padding: 2%;
 } 
 
@@ -99,6 +95,7 @@ a:hover{
 #message-object:hover{
     cursor: pointer;
     background-color: beige;
+    color: black;
 }
 
 #message-viewport{
@@ -127,4 +124,30 @@ a:hover{
 .material-icons.md-14{
     font-size: 14px;
     top: 4px;
+}
+
+#menu-page{
+    margin-top:5%;
+    height: 85%;
+}
+
+.tab {
+    float: left;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    width: 30%;
+    height: 300px;
+}
+
+#menu-navs {
+    display: block;
+    color: #13293D;
+    padding: 1% .8%;
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 17px;
 }
