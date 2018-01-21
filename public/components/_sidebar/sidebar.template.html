@@ -1,41 +1,30 @@
 <div class="row navbar-default">
-    <div class="col-md-12 col-sm-12">
-        <div class="col-md-12 col-sm-12 btn btn-primary">
-            <a ui-sref="menu">
-                <div class="col-md-12">
-                    Menu
-                </div>
-            </a>
-            <button type="button" class="navbar-toggle collapsed" id="collapse-btn" data-target="#room-list" data-toggle="collapse" ng-click="pushBody()">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-    </div>
-    <div class="col-md-12 col-sm-12" style="margin-top: 15%;">
-        <div class="sidebar-items" id="room-list">
-            <div class="panel-body">
-                <h4>
-                    Rooms
-                </h5>
-                <div class="col-md-12 btn btn-primary" ng-repeat="room in rooms track by room.id">
-                    <a class="pull-left" ng-click='loadRoom(room.id)'>
-                        <span ng-class="applyLocationMarker(room.id)" aria-hidden="true"></span>
-                        {{ room.name }}
-                    </a>
-                </div>
+    <div class="col-sm-12 col-md-12 navbar-header">
+        <a class="navbar-brand" ui-sref="menu">
+            <div class="col-md-12 text-center" id="menu-navs">
+                Menu
             </div>
-            <div class="panel-body">
-                <h4>
-                        Messages
-                </h4>
-                <div class="col-md-12 btn btn-primary panel-body" ng-repeat="room in rooms track by room.id">
-                    <a class="pull-left" ng-click='loadRoom(room.id)'>
-                        <span ng-class="applyLocationMarker(room.id)" aria-hidden="true"></span>
-                        {{ room.name }}
-                    </a>
-                </div>
+        </a>
+        <button type="button" class="navbar-toggle collapsed" id="collapse-btn" data-target="#room-list" data-toggle="collapse" ng-click="pushBody()">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    <div class="col-sm-12 col-md-12 sidebar-items nav navbar-nav collapse navbar-collapse navbar-right" id="room-list" style="margin-top: 15%;">
+        <div class="panel-body">
+            <h4>
+                Rooms
+            </h4>
+            <div class="col-sm-12 col-md-12" ng-repeat="room in rooms track by room.id">
+                <ul class="nav flex-column">
+                    <li class="active">
+                        <a class="nav-link" id="menu-navs" class="pull-left" ng-click="loadRoom(room.id)">
+                            <span ng-class="applyLocationMarker(room.id)" class="pull-right" aria-hidden="true"></span>
+                            {{ room.name }}
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

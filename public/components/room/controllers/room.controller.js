@@ -79,12 +79,20 @@ chatroom
         };
 
         function loadRoomSuccess(response) {
-            console.log("State", $state);
+            console.log("Load Room Success", response);
             var initialLoad = $scope.messages.length == 0 ? true : false;
 
-            Object.values(response.data).forEach(data => {
-                $scope.messages.push(data);
-            });
+            var message_data = response.data;
+
+            for(let i = 0; i < message_data.length; i++){
+                debugger;
+                $scope.messages.push(message_data[i]);
+            }
+
+            // IE doesn't support es6 JS and I can't find a decent shim package that works!
+            // Object.values(response.data).forEach(data => {
+            //     $scope.messages.push(data);
+            // });
             console.log("User", $scope.user);
 
             $scope.fetchingMessages = false;

@@ -60,9 +60,12 @@ a:hover{
     border-color: 1px #FFFFFF solid !important;
 }
 
+#home-description > p {
+    font-size: 1.5em;
+}
+
 #image-thumbnail{
-    width:64px;
-    height: 64px;
+    height: 45%;
     border-radius: 50%;
     border: 1px solid #006494;
     margin-left: 1%;
@@ -71,8 +74,8 @@ a:hover{
 #profile-image{
     margin-left: auto;
     margin-right: auto;
-    height: 70%;
-    width: 70%;
+    height: 70px;
+    width: 70px;
     border: 1px solid #FFFFFF !important;
     border-radius: 50%;
 }
@@ -94,8 +97,8 @@ a:hover{
 }
 #message-object:hover{
     cursor: pointer;
-    background-color: beige;
-    color: black;
+    background-color: #484e55;
+    color: #fff;
 }
 
 #message-viewport{
@@ -141,7 +144,7 @@ a:hover{
 
 #menu-navs {
     display: block;
-    color: #13293D;
+    color: #FFF;
     padding: 1% .8%;
     width: 100%;
     border: none;

@@ -1,47 +1,41 @@
 <div class="row" style="margin-top: 5%; overflow-y: hidden;">
     <div class="container-fluid">
         <div class="col-md-5" id="home-image">
-            <img class="img-responsive" style="margin-left: auto; margin-right: auto;" src="http://via.placeholder.com/550x550" alt="Home Image" />
+            <img class="img-responsive" style="margin-left: auto; margin-right: auto;" src="media/Friday.png" alt="Home Image" />
         </div>
         <div class="col-md-7">
             <div class="row">
                 <div class="col-md-8" id="home-description">
+                    <h1 class="rock-face">
+                        Welcome to the Chatrooms
+                    </h1>
                     <p>
-                        Lorem ipsum dolor sit amet, appareat officiis periculis his et. Nec recteque principes necessitatibus ne, dico stet et pri.
-                        Est ex quis veniam. Omittam oportere nam no, his in numquam debitis cotidieque, te illum commodo
-                        eloquentiam has. Dicta tation in his. Eam nominavi maiestatis eu. Mei ex prima recusabo, id nam denique
-                        partiendo. Euismod abhorreant mea ad. Ei viris legimus pro, mazim aperiam per ne. Pro vidit recteque
-                        dissentias id, at mei aeterno salutatus consectetuer. Ea vel inani libris. No qui detraxit platonem.
-                        No minimum recteque consequat eam, cum cu impetus feugiat quaestio. Volumus detracto ei mei, per
-                        in omnis pericula, vel putent imperdiet ad. Nec virtute interesset ex, cibo efficiendi usu te. Veri
-                        volutpat efficiendi vel eu, ea tacimates pericula vis. Vim euismod feugiat ea. His integre complectitur
-                        ea, ne prima mutat liberavisse qui, numquam molestie eum ad. Delenit tacimates est ea. Fabellas apeirian
-                        at eos. Quis oblique sea te, mei eu sonet bonorum disputando. Singulis sapientem qui ne. Debet error
-                        inimicus at eos, error nominati omittantur eu mel, no corrumpit urbanitas mel. Ad ignota facilisi
-                        elaboraret pro, qui ne eleifend definitionem. Reque tacimates prodesset eu sea, sonet vidisse tamquam
-                        per at. Ne pri vero elitr. Quo brute errem delicata ut.
+                        If talking about the time Valentino Rossi won his 5th GP world championship, sharing cooking recipes with like minded people
+                        or walking and talking about some world famous hiking trails is your thing.. The chatrooms could be the place for you. 
+                    </p>
+                    <p>
+                        Share stories, trade insults, enjoy the lols and bants.. The chatrooms could be the place for you!
                     </p>
                 </div>
-                <div class="container">
-                    <div class="col-md-8 pull-left" id="home-account">
-                        <form name="AccountForm" data-ng-submit="userLogin()" novalidate>
-                            <div class="form-group">
-                                <label for="user.username">Email</label>
-                                <input type="text" class="form-control" ng-model="user.username" aria-describedby="emailHelp" />
-                            </div>
-                            <div class="form-group">
-                                <label for="user.password">Password</label>
-                                <input type="text" class="form-control" ng-model="user.password" aria-describedby="passwordHelp" />
-                            </div>
-                            <p class="alert alert-danger hide" id="error-messages">{{ errorMessage }}</p>
-                            <button class="btn btn-primary">Sign In</button>
-                        </form>
-                        <p>
-                            <small>Don't have an account?
-                                <a ui-sref="register">Why not sign up</a>
-                            </small>
-                        </p>
-                    </div>
+                <div class="col-md-8 pull-left" id="home-account" style="margin-top: 3%;">
+                    <form name="AccountForm" data-ng-submit="userLogin()" novalidate>
+                        <div class="form-group">
+                            <label for="user.username">Email</label>
+                            <input type="text" class="form-control" ng-model="user.username" aria-describedby="emailHelp" />
+                        </div>
+                        <div class="form-group">
+                            <label for="user.password">Password</label>
+                            <input type="text" class="form-control" ng-model="user.password" aria-describedby="passwordHelp" />
+                        </div>
+                        <p class="alert alert-danger hide" id="error-messages">{{ errorMessage }}</p>
+                        <button class="btn btn-primary">Sign In</button>
+
+                    </form>
+                    <p>
+                        <small>Don't have an account?
+                            <a ui-sref="register">Why not sign up</a>
+                        </small>
+                    </p>
                 </div>
             </div>
         </div>

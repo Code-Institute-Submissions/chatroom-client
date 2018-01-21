@@ -150,7 +150,8 @@ chatroom
                     'email': $scope.user.email,
                     'password1': $scope.user.password,
                     'password2': $scope.user.password2,
-                    "display_name": $scope.user.display_name
+                    "display_name": $scope.user.display_name,
+                    'profile_picture_path': 'media/generic_profile_picture.jpg'
                 },
                 registerSuccess,
                 registerFailure)
@@ -209,6 +210,9 @@ chatroom
         $scope.resetPassword = function () {
             RestauthService.post('password/change/',
                 {
+                    'username': $scope.user.username,
+                    'password': $scope.user.password,
+                    'old_password': $scope.user.password,
                     'new_password1': $scope.new_password1,
                     'new_password2': $scope.new_password2
                 },

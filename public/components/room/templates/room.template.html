@@ -1,10 +1,10 @@
 <div class="row">
     <div class="container-fluid" id="loaded-screen">
-        <div class="col-md-2 sidebar">
+        <div class="col-sm-12 col-md-2 sidebar">
             <sidebar></sidebar>
         </div>
-        <div class="col-md-10 col-md-offset-2 col-sm-12" id="message-viewport" style="height: 85%;" scroll="onScroll">
-            <div class="col-md-12">
+        <div class="col-sm-12 col-md-10 col-md-offset-2" id="message-viewport" style="height: 85%;" scroll="onScroll">
+            <div class="col-sm-12 col-md-12">
                 <div id="messages-content">
                     <div id="loading-display" class="text-center">
                         <a ng-click="loadRoom(roomId)" ng-if="!fetchingMessages">
@@ -16,10 +16,10 @@
                         </a>
                     </div>
                     <div class="media" id="message-object" ng-repeat="view_message in messages | orderBy: 'id'">
-                        <div class="col-md-12 col-sm-12" ng-if="view_message.user.id !== user.id" id="other-messages">
+                        <div class="col-sm-12 col-md-12" ng-if="view_message.user.id !== user.id" id="other-messages">
                             <div class="media-left media-middle">
                                 <img id="image-thumbnail" class="d-flex align-self-center mr-3" id="image-thumbnail" ng-src="{{view_message.user.profile_picture_path}}"
-                                    alt="Generic placeholder image" />
+                                    alt="Profile picture" />
                             </div>
                             <div class="media-body">
                                 <h6>
@@ -29,11 +29,11 @@
                                 <p>{{ view_message.message }}</p>
                             </div>
                         </div>
-                        <div class="col-md-12 col-sm-12" ng-if="view_message.user.id === user.id" id="user-message">
+                        <div class="col-sm-12 col-md-12" ng-if="view_message.user.id === user.id" id="user-message">
                             <div class="media">
                                 <div class="media-body">
                                     <h6 style="text-align: right;">
-                                        <small  style="padding-left: 0.5%;">{{view_message.date_added | date : "medium" }}</small>
+                                        <small style="padding-left: 0.5%;">{{view_message.date_added | date : "medium" }}</small>
                                         <strong>{{view_message.user.display_name}}</strong>
                                     </h6>
                                     <p style="text-align: right;">{{ view_message.message }}</p>
@@ -41,7 +41,7 @@
                                 <div class="media-left" style="padding-left: 1%;">
                                     <div class="media-left media-middle">
                                         <img id="image-thumbnail" class="d-flex align-self-center mr-3" id="image-thumbnail" ng-src="{{view_message.user.profile_picture_path}}"
-                                            alt="Generic placeholder image" />
+                                            alt="Logged in user image" />
                                     </div>
                                 </div>
                             </div>
@@ -55,6 +55,9 @@
                             </h6>
                             <p>You could be the first to leave their mark in this fine room</p>
                         </div>
+                        <form id="message-{{view_message.id}}" class="collapse p-4" style="z-index: 5;">
+                            <a ng-if="user.id === view_message.user.id" type="submit" class="btn">Private Message</a>
+                        </form>
                     </div>
                 </div>
             </div>
