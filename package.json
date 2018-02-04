@@ -9,13 +9,14 @@
     "socket.io": "^2.0.4",
     "body-parser": "1.14.1",
     "fs": "0.0.2",
-    "multer": "1.1.0"
+    "multer": "1.1.0",
+    "bower": "1.8.2"
   },
   "engines": {
     "node": "6.11.3",
     "npm": "3.10.10"
   },
   "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower install"
-}
+    "postinstall": "bower install"
+  }
 }
