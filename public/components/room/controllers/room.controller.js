@@ -2,7 +2,6 @@ chatroom
     .controller('RoomController', function ($scope, $state, $cookies, $timeout, RoomService) {
         console.log("Room Controller Loaded");
         var LIMIT = 10;
-
         $scope.fetchingMessages = false;
 
         $scope.user = $cookies.getObject('user');
@@ -33,8 +32,19 @@ chatroom
             });
         });
 
-        socket.on('connect', function () {
-            console.log("Connected to room number", $scope.roomId);
+        socket.on('notify-private', function (data) {
+            debugger;
+            var room_id = data.room_id;
+            var message = data.message;
+            Lobibox.notify('default', {
+                title: 'Custom title',
+                msg: message,
+                sound: false,
+                delay: false,
+                onClick: function (room_id) {
+                    $scope.loadRoom(room_id);
+                }
+            });
         });
 
         if (!$scope.roomId) {
@@ -67,54 +77,44 @@ chatroom
             }
 
             offset = $scope.messages.length;
-            RoomService.get('room_messages/' + room_id,
+            RoomService.get('messages/' + room_id,
                 {
                     'params': {
                         'offset': offset,
                         'limit': LIMIT
                     }
                 },
-                loadRoomSuccess,
-                loadRoomFailure);
+                loadMessagesSuccess,
+                loadMessagesFailure);
         };
 
-        function loadRoomSuccess(response) {
+        function loadMessagesSuccess(response) {
             console.log("Load Room Success", response);
             var initialLoad = $scope.messages.length == 0 ? true : false;
 
             var message_data = response.data;
 
-            for(let i = 0; i < message_data.length; i++){
-                debugger;
+            for (let i = 0; i < message_data.length; i++) {
                 $scope.messages.push(message_data[i]);
             }
-
-            // IE doesn't support es6 JS and I can't find a decent shim package that works!
-            // Object.values(response.data).forEach(data => {
-            //     $scope.messages.push(data);
-            // });
-            console.log("User", $scope.user);
-
             $scope.fetchingMessages = false;
 
             socket.emit('join', $scope.roomId, function () {
                 console.log('joined: ' + $scope.room_id);
             });
-            applyLoadingClasses('Loaded');
+
             setTimeout(function () {
-                if (initialLoad && $state.current.name == 'rooms') {
-                    $timeout(function () {
-                        var scrollHeight = $('#message-viewport')[0].scrollHeight;
-                        $('#message-viewport')[0].scrollTop = scrollHeight;
-                    });
-                    
-                }
+                $timeout(function () {
+                    var scrollHeight = $('#message-viewport')[0].scrollHeight;
+                    $('#message-viewport')[0].scrollTop = scrollHeight;
+                });
             }, 1000);
+
+            applyLoadingClasses('Loaded');
         };
 
-        function loadRoomFailure(response) {
+        function loadMessagesFailure(response) {
             $scope.fetchingMessages = false;
-            console.log('message failure', response.data);
             applyLoadingClasses('Loaded');
         };
 
@@ -128,7 +128,7 @@ chatroom
         }
 
         $scope.sendMessage = function () {
-            RoomService.post('write_message/',
+            RoomService.post('messages/',
                 {
                     'user': $scope.user.id,
                     'message': $scope.inputMessage,
@@ -136,12 +136,10 @@ chatroom
                     'date_added': Date()
                 },
                 messageAddedSuccess,
-                messageAddedFailed);
+                messageAddedFailed)
         };
 
         function messageAddedSuccess(response) {
-            console.log('message added', response.data);
-
             $scope.message = createMessage();
 
             socket.emit('messages', {
@@ -158,76 +156,16 @@ chatroom
         };
 
         function messageAddedFailed(response) {
-            console.log('message added failure', response);
-        };
-
-        $scope.addPublicRoom = function () {
-            RoomService.post('add/',
-                {
-                    'name': $scope.newRoom.name,
-                    'tag': $scope.newRoom.tag,
-                    'type': 'public'
-                },
-                publicRoomAddedSuccess,
-                roomAddedFailure)
-        };
-
-        function publicRoomAddedSuccess(response) {
-            console.log('room added success', response);
-            RoomService.post('add_to_room/',
-                {
-                    'user': $scope.user.id,
-                    'room': response.data.id
-                },
-                userRoomSuccess,
-                userRoomFailure);
-        };
-
-        function userRoomSuccess(response) {
-            console.log('added user room success', response);
-
-            var user = $cookies.getObject('user');
-            user.rooms_joined += 1;
-            $cookies.putObject('user', user);
-            $state.go('rooms');
-        };
-
-        function userRoomFailure(response) {
-            console.log('user room failure', response.data);
+            
         };
 
         function roomAddedFailure(response) {
-            console.log('room added failure', response);
-        };
-
-        function getUserRooms() {
-            RoomService.get('user_rooms/',
-                {
-                    'params': {
-                        "user_id": $scope.user.id
-                    }
-                },
-                getUserRoomsSuccess,
-                getUserRoomsFailure);
-        };
-
-        function getUserRoomsSuccess(response) {
-            console.log("user room success", response.data);
-            $scope.rooms = response.data;
-        };
-
-        function getUserRoomsFailure(response) {
-            console.log(response);
         };
 
         $scope.applyLocationMarker = function (room_id) {
             if (room_id === parseInt($scope.roomId)) {
                 return 'fa fa-map-marker';
             }
-        }
-
-        $scope.canSendDirectMessages = function (userId, isSubscribed) {
-            return $scope.user.id !== userId && isSubscribed;
         }
 
         function applyLoadingClasses(transition) {
@@ -237,18 +175,32 @@ chatroom
                     $('#loaded-screen').addClass('hidden');
                     break;
                 case 'Loaded':
-                    $('#loading-screen').fadeOut('slow', function(){
+                    $('#loading-screen').fadeOut('slow', function () {
                         $('#loading-screen').addClass('hidden');
                         $('#loaded-screen').removeClass('hidden');
                     });
                     break;
                 default:
-                    // When fetching messages on scroll. 
-                    // Don't want to apply any classes
                     break;
             }
         }
 
+        function getRooms() {
+            RoomService.get('user_rooms/' + $scope.user.id,
+                null,
+                getRoomsSuccess,
+                getRoomsFailure);
+        };
+
+        function getRoomsSuccess(response) {
+            console.log("user room success", response.data);
+            $scope.rooms = response.data;
+        };
+
+        function getRoomsFailure(response) {
+            console.log(response);
+        };
+
         $scope.loadRoom($scope.roomId, true);
-        getUserRooms();
+        getRooms();
     });

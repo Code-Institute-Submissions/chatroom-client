@@ -3,6 +3,5 @@ chatroom
         return{
             restrict: "E", 
             templateUrl : "public/components/account/templates/profile.picture.html",
-            controller: 'AccountController'
         };
     });

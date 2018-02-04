@@ -11,21 +11,19 @@
             <span class="icon-bar"></span>
         </button>
     </div>
-    <div class="col-sm-12 col-md-12 sidebar-items nav navbar-nav collapse navbar-collapse navbar-right" id="room-list" style="margin-top: 15%;">
-        <div class="panel-body">
-            <h4>
-                Rooms
-            </h4>
-            <div class="col-sm-12 col-md-12" ng-repeat="room in rooms track by room.id">
-                <ul class="nav flex-column">
-                    <li class="active">
-                        <a class="nav-link" id="menu-navs" class="pull-left" ng-click="loadRoom(room.id)">
-                            <span ng-class="applyLocationMarker(room.id)" class="pull-right" aria-hidden="true"></span>
-                            {{ room.name }}
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    <div class="col-sm-12 col-md-12 sidebar-items nav navbar-nav collapse navbar-collapse" id="room-list" style="margin-top: 15%;">
+        <h4>
+            Rooms
+        </h4>
+        <div ng-repeat="room in rooms track by room.id">
+            <ul class="nav flex-column">
+                <li class="active">
+                    <a class="nav-link" id="menu-navs" ng-click="loadRoom(room.id)">
+                        <span ng-class="applyLocationMarker(room.id)" class="pull-right" aria-hidden="true"></span>
+                        {{ room.name }}
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

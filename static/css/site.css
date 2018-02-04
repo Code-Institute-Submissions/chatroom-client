@@ -1,7 +1,7 @@
 html, body, .container-fluid, .row {
     font-family: 'Mukta Mahee', sans-serif;
     height: 100%;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .rock-face{
@@ -65,7 +65,7 @@ a:hover{
 }
 
 #image-thumbnail{
-    height: 45%;
+    height: 64px;
     border-radius: 50%;
     border: 1px solid #006494;
     margin-left: 1%;

@@ -30,7 +30,7 @@ angular
         name: 'menu',
         url: '/menu',
         templateUrl: 'public/components/menu/templates/menu.index.html',
-        controller: 'AccountController'
+        controller: 'MenuController'
     });
 
     $urlRouterProvider.otherwise('/');

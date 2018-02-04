@@ -2,12 +2,13 @@ chatroom
     .controller('AccountController', function ($scope, $state, $cookies, $timeout, AccountService, RoomService, RestauthService, Upload) {
         console.log("Accounts Controller Loaded");
 
+        var userLoggedIn = false;
+
         if (!$scope.user) {
             $scope.user = $cookies.getObject('user');
-            console.log("account user", $scope.user);
         };
 
-        var socket = io.connect();
+        var socket = io();
 
         $scope.token_id = "";
 
@@ -17,6 +18,11 @@ chatroom
 
         $scope.profileImage = '';
         $scope.croppedProfileImage = '';
+
+        socket.on('connect-user', function(socket_id) {
+            console.log("Connected user Socket Id: ", socket_id);
+            $scope.user.socket_id = socket_id;
+        });
 
         var handleFileSelect = function (evt) {
             var file = evt.currentTarget.files[0];
@@ -57,13 +63,13 @@ chatroom
         };
 
         function loginSuccess(response) {
-            console.log('login success', response.data);
-            $scope.getUser(response.data.user);
+            AccountService.get('users/' + response.data.user + '/',
+                null,
+                getUserSuccess,
+                getUserFailure);
         };
 
         function loginFailure(response) {
-            console.log('login failure', response.data);
-
             $scope.errorMessage = "Unable to login with details provided.";
             $('#error-messages').removeClass('hide');
 
@@ -73,29 +79,25 @@ chatroom
             }, 3000);
         };
 
-        $scope.getUser = function (user_id) {
-            AccountService.get('user/' + user_id + '/',
-                null,
-                getUserSuccess,
-                getUserFailure);
-        };
-
         function getUserSuccess(response) {
-            console.log('get user success', response.data);
             $cookies.putObject('user', response.data);
+
+            socket.emit('connect-user', {
+                'user_id': response.data.id,
+                'display_name': response.data.display_name
+            });
 
             setTimeout(function () {
                 $state.go('rooms');
             }, 1500);
         };
 
-        function getUserFailure(data) {
-            console.log(data);
+        function getUserFailure(response) {
         };
 
         $scope.updateUserDetails = function () {
             var profile_path = $scope.picFile ? "/media/profile_images/" + $scope.picFile.name : $scope.user.profile_picture_path;
-            AccountService.patch("update/" + $scope.user.id + '/',
+            AccountService.patch("users/" + $scope.user.id + '/',
                 {
                     'username': $scope.user.username,
                     'email': $scope.user.email,
@@ -116,7 +118,7 @@ chatroom
                 updateDetailsFailure();
             } else {
                 $scope.token_id = result.id;
-                AccountService.put("subscribe/",
+                AccountService.put("users/"+ $scope.user.id,
                     {
                         'user': {
                             'email': $scope.user.email,
@@ -136,11 +138,9 @@ chatroom
             $cookies.putObject('user', $scope.user);
             $scope.croppedProfileImage = "";
             $scope.picFile = "";
-            console.log(response.data);
         };
 
         function updateDetailsFailure(response) {
-            console.log(response.data);
         };
 
         $scope.registerUser = function () {
@@ -158,10 +158,7 @@ chatroom
         };
 
         function registerSuccess(response) {
-            console.log('register success', response.data);
-
-            // response from registration success returns a user: id
-            RoomService.post('add_to_room/',
+            RoomService.post('user_rooms/',
                 {
                     'user': response.data.user,
                     'room': 1
@@ -171,7 +168,6 @@ chatroom
         };
 
         function registerFailure(response) {
-            console.log('register failure', response.data);
             $scope.errorMessage = response.data;
             $('#error-messages').removeClass('hide');
 
@@ -186,7 +182,7 @@ chatroom
         };
 
         function userRoomFailure(response) {
-            console.log('user room failure', response.data);
+            
         };
 
         $scope.logout = function () {
@@ -198,13 +194,14 @@ chatroom
 
         function logoutSuccess(response) {
             socket.disconnect();
+            
             $cookies.remove('user');
             $cookies.remove('room_id');
             $state.go('home');
         };
 
         function logoutFailure(response) {
-            console.log('logout failure', response);
+            
         };
 
         $scope.resetPassword = function () {
@@ -221,10 +218,10 @@ chatroom
         }
 
         function resetSuccess(response) {
-            console.log('reset success', response);
+            
         }
 
         function resetFailure(response) {
-            console.log("reset failure", response);
+            
         }
     });
