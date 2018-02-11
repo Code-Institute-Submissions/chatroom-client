@@ -118,7 +118,9 @@ chatroom
                 console.log('joined: ' + room_id);
             });
 
-            applyLoadingClasses('Loaded');
+            setTimeout(function () {
+                applyLoadingClasses('Loaded');
+            }, 2000);
         };
 
         function loadMessagesFailure(response) {
