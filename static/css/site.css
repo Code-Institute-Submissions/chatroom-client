@@ -1,7 +1,7 @@
 html, body, .container-fluid, .row {
     font-family: 'Mukta Mahee', sans-serif;
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .rock-face{
@@ -27,7 +27,7 @@ a:hover{
 }
  
 ::-webkit-scrollbar-thumb {
-    background: #006494; 
+    background: #333333; 
     border-radius: 10px;
 }
 
@@ -67,7 +67,7 @@ a:hover{
 #image-thumbnail{
     height: 64px;
     border-radius: 50%;
-    border: 1px solid #006494;
+    border: 1px solid #333333;
     margin-left: 1%;
 }
 
@@ -84,7 +84,7 @@ a:hover{
     text-align: left;
     display: block;
     text-transform: uppercase;
-    color: #006494;
+    color: #333333;
     height: 3% !important;
     font-size: 1em; 
     padding: 2%;
@@ -109,7 +109,6 @@ a:hover{
     position: fixed;
     bottom: 4%;
 }
-
 #loading-display{
     margin-left: auto;
     margin-right: auto;
@@ -118,10 +117,10 @@ a:hover{
 }
 
 #message-input{
-    border: 1px solid #006494;
+    border: 1px solid #333333;
 }
 #message-input:focus{
-    border: 2px solid #006494;
+    border: 2px solid #333333;
 }
 
 .material-icons.md-14{
@@ -153,4 +152,14 @@ a:hover{
     cursor: pointer;
     transition: 0.3s;
     font-size: 17px;
+}
+
+#menu-list{
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    padding-bottom: 15px;
+    padding-left: 25px;
+    text-decoration: none;
+    text-transform: uppercase;
 }

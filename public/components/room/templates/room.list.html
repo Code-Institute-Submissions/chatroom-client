@@ -1,0 +1,103 @@
+<div class="container-fluid">
+    <div ng-include="'/public/components/_navbar/navbar.html'"></div>
+    <div class="row" style="margin-top: 4%;">
+        <div class="col-md-6 col-sm-12">
+            <div class="widget panel-primary">
+                <div class="panel-heading">
+                    <h3 class="text-center">Your Rooms</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <table class="table-responsive table-striped table-justified table-hover" style="width:100%;">
+                                <thead>
+                                    <th>Room Name</th>
+                                    <th>Tag</th>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="room in users_rooms track by room.id">
+                                        <td class="card-title">
+                                            <a class="btn text-center" ng-click="loadRoom(room.id)" id="room_{{room.id}}">
+                                                {{room.name}}
+                                            </a>
+                                        </td>
+                                        <td class="card-subtitle mr-2 text-muted">
+                                            {{room.tag}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="col-md-12 col-sm-12" style="height: 50vh; overflow-y: auto;">
+                <div class="widget panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="text-center">Search Rooms</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form name="SearchForm" data-ng-submit="roomSearch()" novalidate>
+                            <div class="form-group">
+                                <input class="form-control" type="text" ng-model="searchTerm" placeholder="Search By Room Name or Tag" required/>
+                                <p data-ng-show="SearchForm.email.$pristine" class="help-block">Provide a term to start your search</p>
+                                <p class="alert alert-success hide" id="success-messages">{{ message }}</p>
+                                <p class="alert alert-danger hide" id="error-messages">{{ message }}</p>
+                            </div>
+                        </form>
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table-responsive table-striped table-justified table-hover" style="width:100%;">
+                                    <tbody>
+                                        <tr ng-repeat="room in searchableRooms track by room.id">
+                                            <td class="card-title">
+                                                <a class="btn text-center" id="room_{{room.id}}" ng-click="joinRoom(room.id)" style="width:50%;">
+                                                    {{room.name}}
+                                                </a>
+                                            </td>
+                                            <td class="card-subtitle mr-2 text-muted">{{room.tag}}</td>
+                                        </tr>
+                                        <tr ng-if="searchableRooms.length == 0" class="alert alert-success text-center">
+                                            <td style="color: #006494;">
+                                                <h4>Nothing to see here (-_-)</h4>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12">
+                <div class="widget panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="text-center">Add New Room</h3>
+                    </div>
+                    <div class="panel-body" ng-if="user.is_subscribed">
+                        <form name="AddRoomForm" data-ng-submit="addRoom()" novalidate>
+                            <div class="form-group">
+                                <label>Room Name</label>
+                                <input type="text" name="name" class="form-control" data-ng-model="newRoom.name" required>
+                                <p data-ng-show="AddRoomForm.name.$pristine" class="help-block">A room name is required</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Tag</label>
+                                <input type="text" name="tag" class="form-control" data-ng-model="newRoom.tag" required>
+                            </div>
+
+                            <p class="alert alert-danger hide" id="error-messages">{{ errorMessage }}</p>
+                            <button type="submit" class="btn btn-default pull-right" data-ng-disabled="AddRoomForm.$invalid">Add Room</button>
+                        </form>
+                    </div>
+                    <div class="panel-body" ng-if="!user.is_subscribed">
+                        <h4 class="text-center">A Subscription is required to perform this action.</h4>
+                        <subscription></subscription>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

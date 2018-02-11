@@ -3,6 +3,5 @@ chatroom
         return{
             restrict: "E", 
             templateUrl : "public/components/room/templates/room.search.html",
-            controller: 'SearchController'
         };
     });

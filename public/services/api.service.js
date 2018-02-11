@@ -1,12 +1,10 @@
 chatroom
     .factory('ApiService', function($http){
-        var ApiService = function(serviceEndpoint) {
-            var applicationUrl = 'https://chatrooms-server.herokuapp.com/v1/' + serviceEndpoint;
+        var ApiService = function() {
+            var applicationUrl = 'http://localhost:8000/v1/';
 
-            function get(endpoint, data, success, failure){
-                var url = applicationUrl.concat('/').concat(endpoint);
-                console.log("Test Api:", url);
-
+            function get(url, data, success, failure){
+                url = applicationUrl.concat(url);
                 return $http.get(url, data)
                     .then(function (result) {
                         success(result);
@@ -15,9 +13,8 @@ chatroom
                     });
             };
 
-            function post(endpoint, data, success, failure){
-                var url = applicationUrl.concat('/').concat(endpoint);
-
+            function post(url, data, success, failure){
+                url = applicationUrl.concat(url);
                 return $http.post(url, data, { })
                     .then(function (result) {
                         success(result);
@@ -26,9 +23,8 @@ chatroom
                     });
             };
 
-            function put(endpoint, data, success, failure){
-                var url = applicationUrl.concat('/').concat(endpoint);
-
+            function put(url, data, success, failure){
+                url = applicationUrl.concat(url);
                 return $http.put(url, data, success, failure)
                     .then(function(data){
                         success(data);
@@ -37,9 +33,8 @@ chatroom
                     });
             };
 
-            function patch(endpoint, data, success, failure){
-                var url = applicationUrl.concat('/').concat(endpoint);
-
+            function patch(url, data, success, failure){
+                url = applicationUrl.concat(url);
                 return $http.patch(url, data, success, failure)
                     .then(function(data){
                         success(data);

@@ -1,13 +1,11 @@
 chatroom
-    .controller('RoomController', function ($scope, $state, $cookies, $timeout, RoomService) {
+    .controller('RoomController', function ($scope, $state, $cookies, $stateParams, $timeout, ApiService) {
         console.log("Room Controller Loaded");
+
         var LIMIT = 10;
         $scope.fetchingMessages = false;
-
-        $scope.user = $cookies.getObject('user');
-        $scope.roomId = $cookies.get('roomId');
-
-        $scope.date_now = Date();
+        var apiService;
+        var user_id;
 
         $scope.messages = [];
         $scope.message = [];
@@ -15,148 +13,88 @@ chatroom
         $scope.newRoom = {};
         $scope.inputMessage = "";
 
-        var socket = io.connect();
+        var socket = io();
 
-        socket.on('broad', function (message) {
-            $scope.$apply(function () {
-                console.log("Message Broadcasted!!", message);
-                $scope.messages.push(message);
-            });
-        });
+        function onLoad() {
+            apiService = ApiService();
 
-        socket.on('changeRoom', function () {
-            console.log("Changed to room number", $scope.roomId);
-            socket.emit('room-', {
-                room_id: $scope.roomId,
-                message: $scope.user.email + ' has joined room number: ' + $scope.roomId
-            });
-        });
-
-        socket.on('notify-private', function (data) {
-            debugger;
-            var room_id = data.room_id;
-            var message = data.message;
-            Lobibox.notify('default', {
-                title: 'Custom title',
-                msg: message,
-                sound: false,
-                delay: false,
-                onClick: function (room_id) {
-                    $scope.loadRoom(room_id);
-                }
-            });
-        });
-
-        if (!$scope.roomId) {
-            $scope.roomId = 1;
-            $cookies.put('roomId', 1);
-            console.log("Room ID: ", $scope.roomId);
-        }
-
-        $scope.onScroll = function (event, element) {
-            if (!$scope.fetchingMessages && element[0].scrollTop === 0) {
-                $scope.loadRoom($scope.roomId, false);
-                console.log("Scroll Event: ", event);
+            if($cookies.getObject('user')){
+                $scope.user = $cookies.getObject('user');
+                console.log("User logged in on room controller", $scope.user);      
+            } else {
+                user_id = $stateParams.user_id;
             }
         }
 
-        $scope.loadRoom = function (room_id, onload) {
-            if (onload) {
-                applyLoadingClasses('Loading');
-            };
+        function getUser(user_id) {
+            user_id = user_id ? user_id : $scope.user.id;
+            apiService.get('users/' + user_id + '/',
+                null,
+                getUserSuccess,
+                getUserFailure);
+        }
 
-            if ($scope.fetchingMessages) {
-                return;
-            }
-            $scope.fetchingMessages = true;
+        function getUserSuccess(response) {
+            console.log("Get User Success", response.data);
+            $cookies.putObject('user', response.data);
+            $scope.user = response.data;
+        }
 
-            if (room_id !== $scope.roomId) {
-                $cookies.put('roomId', room_id);
-                $scope.roomId = room_id;
-                $scope.messages = [];
-            }
+        function getUserFailure(response) {
+            console.log("Get User Failure", response.data);
+        }
 
-            offset = $scope.messages.length;
-            RoomService.get('messages/' + room_id,
+        function getRooms(user_id) {
+            user_id = user_id ? user_id : $scope.user.id;
+            apiService.get('rooms/get_user_rooms/' + user_id  + '/',
+                null,
+                getRoomsSuccess,
+                getRoomsFailure);
+        }
+
+        function getRoomsSuccess(response) {
+            console.log("Get Room Success", response.data);
+            $scope.users_rooms = response.data;
+        }
+
+        function getRoomsFailure(response) {
+            console.log("Get User Failure", response.data);
+        }
+
+        $scope.addRoom = function () {
+            apiService.post('rooms/add_room/',
                 {
-                    'params': {
-                        'offset': offset,
-                        'limit': LIMIT
-                    }
+                    'name': $scope.newRoom.name,
+                    'tag': $scope.newRoom.tag,
+                    'type': 'public',
+                    'user_id': $scope.user.id
                 },
-                loadMessagesSuccess,
-                loadMessagesFailure);
+                roomAddedSuccess,
+                roomAddedFailure)
         };
 
-        function loadMessagesSuccess(response) {
-            console.log("Load Room Success", response);
-            var initialLoad = $scope.messages.length == 0 ? true : false;
+        function roomAddedSuccess(response) {
+            console.log('room added success', response);
+            $timeout(function(){
 
-            var message_data = response.data;
-
-            for (let i = 0; i < message_data.length; i++) {
-                $scope.messages.push(message_data[i]);
-            }
-            $scope.fetchingMessages = false;
-
-            socket.emit('join', $scope.roomId, function () {
-                console.log('joined: ' + $scope.room_id);
-            });
-
-            setTimeout(function () {
-                $timeout(function () {
-                    var scrollHeight = $('#message-viewport')[0].scrollHeight;
-                    $('#message-viewport')[0].scrollTop = scrollHeight;
-                });
-            }, 1000);
-
-            applyLoadingClasses('Loaded');
-        };
-
-        function loadMessagesFailure(response) {
-            $scope.fetchingMessages = false;
-            applyLoadingClasses('Loaded');
-        };
-
-        function createMessage() {
-            return {
-                'user': $scope.user,
-                'message': $scope.inputMessage,
-                'room': $scope.roomId,
-                'date_added': Date()
-            };
-        }
-
-        $scope.sendMessage = function () {
-            RoomService.post('messages/',
-                {
-                    'user': $scope.user.id,
-                    'message': $scope.inputMessage,
-                    'room': $scope.roomId,
-                    'date_added': Date()
-                },
-                messageAddedSuccess,
-                messageAddedFailed)
-        };
-
-        function messageAddedSuccess(response) {
-            $scope.message = createMessage();
-
-            socket.emit('messages', {
-                room_id: $scope.roomId,
-                message: $scope.message
-            });
-
-            $scope.inputMessage = "";
-
-            $timeout(function () {
-                var scrollHeight = $('#message-viewport')[0].scrollHeight;
-                $('#message-viewport')[0].scrollTop = scrollHeight;
             });
         };
 
-        function messageAddedFailed(response) {
-            
+        function userRoomSuccess(response) {
+            console.log('added user room success', response);
+
+            // var user = $cookies.getObject('user');
+            // user.rooms_joined += 1;
+            // $cookies.putObject('user', user);
+            // $state.go('rooms');
+        };
+
+        function userRoomFailure(response) {
+            console.log('user room failure', response.data);
+        };
+
+        function roomAddedFailure(response) {
+            console.log('room added failure', response);
         };
 
         function roomAddedFailure(response) {
@@ -164,7 +102,7 @@ chatroom
 
         $scope.applyLocationMarker = function (room_id) {
             if (room_id === parseInt($scope.roomId)) {
-                return 'fa fa-map-marker';
+                return 'active';
             }
         }
 
@@ -185,22 +123,88 @@ chatroom
             }
         }
 
-        function getRooms() {
-            RoomService.get('user_rooms/' + $scope.user.id,
+        $scope.loadRoom = function (room_id) {
+            $state.go('messages', { room_id: room_id });
+        }
+
+        $scope.logout = function () {
+            apiService.post('rest-auth/logout/',
                 null,
-                getRoomsSuccess,
-                getRoomsFailure);
+                logoutSuccess,
+                logoutFailure);
         };
 
-        function getRoomsSuccess(response) {
-            console.log("user room success", response.data);
-            $scope.rooms = response.data;
+        function logoutSuccess(response) {
+            socket.disconnect();
+
+            $cookies.remove('user');
+            $state.go('home');
         };
 
-        function getRoomsFailure(response) {
+        function logoutFailure(response) {
+
+        };
+
+        $scope.roomSearch = function () {
+            apiService.get('rooms/get_rooms/',
+                {
+                    'params': {
+                        'searchTerm': $scope.searchTerm,
+                        'userId': $scope.user.id
+                    }
+                },
+                searchSuccess,
+                searchFailure);
+        }
+
+        function searchSuccess(response) {
+            console.log(response.data);
+            $scope.searchableRooms = response.data;
+
+        }
+
+        function searchFailure(response) {
             console.log(response);
-        };
+        }
 
-        $scope.loadRoom($scope.roomId, true);
-        getRooms();
+        $scope.joinRoom = function (room_id) {
+            apiService.post('rooms/add_to_room/',
+                {
+                    'user': $scope.user.id,
+                    'room': room_id
+                },
+                joinRoomSuccess,
+                joinRoomFailure);
+        }
+
+        function joinRoomSuccess(response) {
+            console.log("Joined Successfully", response);
+            $scope.message = "Successfully joind the room.";
+            $('#success-messages').fadeIn('fast', function(){
+                $('#success-messages').removeClass('hide');
+            });
+
+            setTimeout(function () {
+                $scope.message = String.empty;
+                $('#success-messages').addClass('hide');
+                $state.go('messages', { room_id: response.data.room_id });
+            }, 1000);
+        }
+
+        function joinRoomFailure(response) {
+            console.log("Failed to join room", response);
+
+            $scope.message = "There was an issue while trying to add you to that room.";
+            $('#error-messages').removeClass('hide');
+
+            setTimeout(function () {
+                $scope.errorMessage = String.empty;
+                $('#error-messages').addClass('hide');
+            }, 3000);
+        }
+
+        // $scope.loadRoom($scope.roomId, true);
+        onLoad();
+        getUser(user_id);
+        getRooms(user_id);
     });

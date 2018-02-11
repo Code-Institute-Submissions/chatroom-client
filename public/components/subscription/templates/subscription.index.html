@@ -1,0 +1,47 @@
+<div class="container-fluid">
+    <div class="row" style="margin-top: 4%;">
+        <div ng-include="'/public/components/_navbar/navbar.html'"></div>
+        <div class="col-md-6 col-sm-12 col-md-offset-3">
+            <div class="well">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="text-center">Subscription</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-12 col-sm-12" id="subscription" ng-if="!user.is_subscribed">
+                            <h5>For just £1 a month you can subscribe for the ability to add new rooms</h5>
+                            <form stripe-form="createSubscription">
+                                <div class="form-group">
+                                    <label>Card Number</label>
+                                    <input class="form-control" ng-model="number" placeholder="Card Number" payments-format="card" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Card Expiration Date</label>
+                                    <input class="form-control" ng-model="expiry" placeholder="Expiration" payments-format="expiry" />
+                                </div>
+                                <div class="form-group">
+                                    <label>Security Number</label>
+                                    <input class="form-control" ng-model="cvc" placeholder="CVC" payments-format="cvc" />
+                                </div>
+                                <div ng-if="checkoutForm.card.$invalid">
+                                    Error: invalid card number!
+                                </div>
+                                <button class="btn btn-default pull-right" type="submit">Submit</button>
+                            </form>
+                        </div>
+                        <div class="col-md-12 col-sm-12" id="subscription" ng-if="user.is_subscribed">
+                            <div>
+                                <h4>Your subscription is due to renew on {{ user.subscription_end | date: 'medium' }}</h3>
+                                    <label>
+                                        Rooms Joined
+                                    </label>
+                                    <p>{{ user.rooms_joined }}/{{ user.room_limit }}</p>
+                            </div>
+                            <button class="btn btn-default pull-right" type="submit" style="margin-top: 3%;">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,11 +1,11 @@
 <div class="row" style="margin-top: 5%; overflow-y: hidden;">
     <div class="container-fluid">
-        <div class="col-md-5" id="home-image">
+        <div class="col-md-5 col-sm-12" id="home-image">
             <img class="img-responsive" style="margin-left: auto; margin-right: auto;" src="media/Friday.png" alt="Home Image" />
         </div>
-        <div class="col-md-7">
+        <div class="col-md-7 col-sm-12">
             <div class="row">
-                <div class="col-md-8" id="home-description">
+                <div class="col-md-8 col-sm-12" id="home-description">
                     <h1 class="rock-face">
                         Welcome to the Chatrooms
                     </h1>
@@ -17,7 +17,7 @@
                         Share stories, trade insults, enjoy the lols and bants.. The chatrooms could be the place for you!
                     </p>
                 </div>
-                <div class="col-md-8 pull-left" id="home-account" style="margin-top: 3%;">
+                <div class="col-md-8 col-sm-12 pull-left" id="home-account" style="margin-top: 3%;">
                     <form name="AccountForm" data-ng-submit="userLogin()" novalidate>
                         <div class="form-group">
                             <label for="user.username">Email</label>
@@ -28,7 +28,7 @@
                             <input type="text" class="form-control" ng-model="user.password" aria-describedby="passwordHelp" />
                         </div>
                         <p class="alert alert-danger hide" id="error-messages">{{ errorMessage }}</p>
-                        <button class="btn btn-primary">Sign In</button>
+                        <button class="btn btn-default">Sign In</button>
 
                     </form>
                     <p>

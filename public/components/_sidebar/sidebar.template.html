@@ -1,7 +1,7 @@
 <div class="row navbar-default">
     <div class="col-sm-12 col-md-12 navbar-header">
-        <a class="navbar-brand" ui-sref="menu">
-            <div class="col-md-12 text-center" id="menu-navs">
+        <a class="navbar-brand" ui-sref="rooms_list({user_id: user.id})">
+            <div class="col-md-12 text-center" id="menu-list">
                 Menu
             </div>
         </a>
@@ -12,17 +12,21 @@
         </button>
     </div>
     <div class="col-sm-12 col-md-12 sidebar-items nav navbar-nav collapse navbar-collapse" id="room-list" style="margin-top: 15%;">
-        <h4>
+        <h3 style="color: white; padding-left: 25px;">
             Rooms
-        </h4>
-        <div ng-repeat="room in rooms track by room.id">
+        </h3>
+        <div ng-repeat="room in users_rooms track by room.id">
             <ul class="nav flex-column">
-                <li class="active">
-                    <a class="nav-link" id="menu-navs" ng-click="loadRoom(room.id)">
-                        <span ng-class="applyLocationMarker(room.id)" class="pull-right" aria-hidden="true"></span>
-                        {{ room.name }}
-                    </a>
-                </li>
+                <div class="col-md-10 col-sm-9" id="menu-list">
+                    <li class="active">
+                        <a class="nav-link" ng-click="changeRoom(room.id)">
+                            {{ room.name }}
+                        </a>
+                    </li>
+                </div>
+                <div class="col-md-2 col-sm-3">
+                    <span ng-class="applyLocationMarker(room.id)" style="color: white;" class="pull-right" aria-hidden="true"></span>
+                </div>
             </ul>
         </div>
     </div>

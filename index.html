@@ -4,12 +4,12 @@
 <head>
     <meta charset="utf-8">
     <title>Chatroom</title>
+    <base href="/">
 
     <!-- es6 compatibility -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
-    
+
     <!-- Theme -->
-    <link rel="stylesheet" src="bower_components/angular-loading-bar/build/loading-bar.css"  type='text/css' media='all'>
     <link href="https://fonts.googleapis.com/css?family=Rock+Salt" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Mukta+Mahee" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -32,43 +32,29 @@
     <script src="bower_components/ui-cropper/compile/minified/ui-cropper.js"></script>
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-    <script src='bower_components/angular-loading-bar/build/loading-bar.min.js'></script>
 
 
     <!-- Application Setup -->
     <script src="public/appRoutes.js"></script>
     <script src="public/app.js"></script>
 
-    <!--  Controllers -->
-    <script src="public/components/account/controllers/account.controller.js"></script>
+    <script src="public/components/profile/controllers/profile.controller.js"></script>
     <script src="public/components/room/controllers/room.controller.js"></script>
-    <script src="public/components/searching/controllers/search.controller.js"></script>
-    <script src="public/components/menu/controllers/menu.controller.js"></script>
-
-    <!-- Services -->
-    <script src="public/components/account/services/account.service.js"></script>
-    <script src="public/components/room/services/room.service.js"></script>
-    <script src="public/components/account/services/restauth.service.js"></script>
-    <script src="public/components/searching/services/search.service.js"></script>
-    <script src="public/components/notification/services/notification.service.js"></script>
+    <script src="public/components/messages/controllers/message.controller.js"></script>  
+    <script src="public/components/subscription/controllers/subscription.controller.js"></script>        
+    
     <script src="public/services/api.service.js"></script>
 
-    <!-- Directives -->
     <script src="public/directives/scroll.directive.js"></script>
-    <script src="public/directives/enter.directive.js"></script>    
-    <!-- <script src="public/components/_subscription/subscription.directive.js"></script> -->
+    <script src="public/directives/enter.directive.js"></script>
+    <script src="public/components/_navbar/navbar.directive.js"></script>
+    <script src="public/components/subscription/directives/subscription.directive.js"></script>   
+    
     <script src="public/components/_sidebar/sidebar.directive.js"></script>
-    <script src="public/components/account/directives/profile.directive.js"></script>
-    <script src="public/components/account/directives/password.directive.js"></script>
-    <script src="public/components/account/directives/picture.directive.js"></script>
-    <script src="public/components/account/directives/subscription.directive.js"></script>
-    <script src="public/components/room/directives/roomSearch.directive.js"></script>
-    <script src="public/components/room/directives/roomAdd.directive.js"></script>
-    <script src="public/components/room/directives/roomPrivate.directive.js"></script>
 
     <script src="https://js.stripe.com/v2/" type="text/javascript"></script>
     <script type="text/javascript" src="bower_components/angular-payments/lib/angular-payments.js"></script>
-    <script src ="/socket.io/socket.io.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 
 <body>
@@ -76,7 +62,7 @@
     <ui-view></ui-view>
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>    
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 </body>
 
 </html>

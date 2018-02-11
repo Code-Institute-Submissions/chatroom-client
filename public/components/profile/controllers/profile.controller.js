@@ -1,25 +1,30 @@
 chatroom
-    .controller('AccountController', function ($scope, $state, $cookies, $timeout, AccountService, RoomService, RestauthService, Upload) {
-        console.log("Accounts Controller Loaded");
-
-        var userLoggedIn = false;
-
-        if (!$scope.user) {
-            $scope.user = $cookies.getObject('user');
-        };
-
+    .controller('ProfileController', function ($scope, $state, $cookies, $timeout, ApiService, Upload) {
+        console.log("Profile Controller Loaded");
         var socket = io();
+        var apiService = ApiService();
 
         $scope.token_id = "";
 
-        $scope.number;
-        $scope.expiry;
-        $scope.cvc;
+        $scope.number, $scope.expiry, $scope.cvc;
 
         $scope.profileImage = '';
         $scope.croppedProfileImage = '';
 
-        socket.on('connect-user', function(socket_id) {
+        function onLoad(){
+            var userLoggedIn = false;
+            if($cookies.get('user')){
+                $scope.user = $cookies.getObject('user');
+                console.log("User logged in on profile controller", $scope.user.id, $scope.user.display_name);       
+                userLoggedIn = true;        
+            }
+            if(userLoggedIn && $state.current.name === 'home'){
+                console.log("User Already Logged In");
+                $state.go('rooms_list', { user_id: $scope.user.id });
+            }
+        }
+
+        socket.on('connect-user', function (socket_id) {
             console.log("Connected user Socket Id: ", socket_id);
             $scope.user.socket_id = socket_id;
         });
@@ -53,7 +58,7 @@ chatroom
         }
 
         $scope.userLogin = function () {
-            RestauthService.post('login/',
+            apiService.post('rest-auth/login/',
                 {
                     'username': $scope.user.username,
                     'password': $scope.user.password
@@ -63,10 +68,8 @@ chatroom
         };
 
         function loginSuccess(response) {
-            AccountService.get('users/' + response.data.user + '/',
-                null,
-                getUserSuccess,
-                getUserFailure);
+            console.log("Login Success");
+            $state.go('rooms_list', { user_id: response.data.user });
         };
 
         function loginFailure(response) {
@@ -79,25 +82,10 @@ chatroom
             }, 3000);
         };
 
-        function getUserSuccess(response) {
-            $cookies.putObject('user', response.data);
-
-            socket.emit('connect-user', {
-                'user_id': response.data.id,
-                'display_name': response.data.display_name
-            });
-
-            setTimeout(function () {
-                $state.go('rooms');
-            }, 1500);
-        };
-
-        function getUserFailure(response) {
-        };
 
         $scope.updateUserDetails = function () {
             var profile_path = $scope.picFile ? "/media/profile_images/" + $scope.picFile.name : $scope.user.profile_picture_path;
-            AccountService.patch("users/" + $scope.user.id + '/',
+            apiService.patch("users/" + $scope.user.id + '/',
                 {
                     'username': $scope.user.username,
                     'email': $scope.user.email,
@@ -118,7 +106,7 @@ chatroom
                 updateDetailsFailure();
             } else {
                 $scope.token_id = result.id;
-                AccountService.put("users/"+ $scope.user.id,
+                apiService.put("users/" + $scope.user.id,
                     {
                         'user': {
                             'email': $scope.user.email,
@@ -144,7 +132,7 @@ chatroom
         };
 
         $scope.registerUser = function () {
-            RestauthService.post('registration/',
+            apiService.post('rest-auth/registration/',
                 {
                     'username': $scope.user.email,
                     'email': $scope.user.email,
@@ -158,7 +146,7 @@ chatroom
         };
 
         function registerSuccess(response) {
-            RoomService.post('user_rooms/',
+            apiService.post('chatroom/user_rooms/',
                 {
                     'user': response.data.user,
                     'room': 1
@@ -182,11 +170,11 @@ chatroom
         };
 
         function userRoomFailure(response) {
-            
+
         };
 
         $scope.logout = function () {
-            RestauthService.post('logout/',
+            apiService.post('rest-auth/logout/',
                 null,
                 logoutSuccess,
                 logoutFailure);
@@ -194,18 +182,17 @@ chatroom
 
         function logoutSuccess(response) {
             socket.disconnect();
-            
+
             $cookies.remove('user');
-            $cookies.remove('room_id');
             $state.go('home');
         };
 
         function logoutFailure(response) {
-            
+
         };
 
         $scope.resetPassword = function () {
-            RestauthService.post('password/change/',
+            apiService.post('password/change/',
                 {
                     'username': $scope.user.username,
                     'password': $scope.user.password,
@@ -218,10 +205,12 @@ chatroom
         }
 
         function resetSuccess(response) {
-            
+            console.log("Password Reset Successfull");
         }
 
         function resetFailure(response) {
-            
+            console.log("Password Reset Failure");
         }
+
+        onLoad();
     });

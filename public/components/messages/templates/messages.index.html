@@ -1,0 +1,93 @@
+<div class="row">
+        <div class="container-fluid" id="loaded-screen">
+            <div class="col-sm-12 col-md-2 sidebar">
+                <sidebar></sidebar>
+            </div>
+            <div class="col-sm-12 col-md-10 col-md-offset-2" id="message-viewport" style="height: 85%;" scroll="onScroll">
+                <div class="col-sm-12 col-md-12">
+                    <div id="messages-content">
+                        <div id="loading-display" class="text-center">
+                            <a ng-click="loadRoom(roomId)" ng-if="!fetchingMessages">
+                                <small>View Historic</small>
+                            </a>
+                            <a ng-show="fetchingMessages" style="font-size: 1.2em;">
+                                Fetching
+                                <span class="fa fa-circle-o-notch fa-spin"></span>
+                            </a>
+                        </div>
+                        <div class="media" id="message-object" ng-repeat="view_message in messages | orderBy: 'id'">
+                            <div class="col-sm-12 col-md-12" ng-if="view_message.user.id !== user.id" id="other-messages">
+                                <div class="media-left media-middle">
+                                    <img id="image-thumbnail" class="d-flex align-self-center mr-3" id="image-thumbnail" ng-src="{{view_message.user.profile_picture_path}}"
+                                        alt="Profile picture" />
+                                </div>
+                                <div class="media-body">
+                                    <h6>
+                                        <strong>{{view_message.user.display_name}}</strong>
+                                        <small>{{view_message.date_added | date : "medium" }}</small>
+                                    </h6>
+                                    <p>{{ view_message.message }}</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-12" ng-if="view_message.user.id === user.id" id="user-message">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h6 style="text-align: right;">
+                                            <small style="padding-left: 0.5%;">{{view_message.date_added | date : "medium" }}</small>
+                                            <strong>{{view_message.user.display_name}}</strong>
+                                        </h6>
+                                        <p style="text-align: right;">{{ view_message.message }}</p>
+                                    </div>
+                                    <div class="media-left" style="padding-left: 1%;">
+                                        <div class="media-left media-middle">
+                                            <img id="image-thumbnail" class="d-flex align-self-center mr-3" id="image-thumbnail" ng-src="{{view_message.user.profile_picture_path}}"
+                                                alt="Logged in user image" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="media" id="message-object" ng-if="messages.length === 0">
+                            <div class="media-body">
+                                <h6>
+                                    <strong>No Content Just Yet</strong>
+                                    <small>{{ date_now | date : "medium" }}</small>
+                                </h6>
+                                <p>You could be the first to leave their mark in this fine room</p>
+                            </div>
+                            <form id="message-{{view_message.id}}" class="collapse p-4" style="z-index: 5;">
+                                <a ng-if="user.id === view_message.user.id" type="submit" class="btn">Private Message</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10 col-md-offset-2" id="message-section" style="margin-top: 5%;">
+                <form class="form" name="MessageForm">
+                    <input type="text" id="message-input" class="form-control" placeholder="Enter Your Message" 
+                    enter="sendMessage()" ng-model="input_message"
+                    />
+                </form>
+            </div>
+        </div>
+        <div class="container-fluid hidden" id="loading-screen">
+            <div class="col-md-2 sidebar">
+    
+            </div>
+            <div class="col-md-10 col-md-offset-2" id="message-viewport">
+                <!-- <img class="img-responsive" style="margin-left: auto; margin-right: auto; margin-top: auto; margin-bottom: auto; opacity: 0.8;" src="/media/loading_image.jpg"> -->
+                <div class="sk-cube-grid">
+                    <div class="sk-cube sk-cube1"></div>
+                    <div class="sk-cube sk-cube2"></div>
+                    <div class="sk-cube sk-cube3"></div>
+                    <div class="sk-cube sk-cube4"></div>
+                    <div class="sk-cube sk-cube5"></div>
+                    <div class="sk-cube sk-cube6"></div>
+                    <div class="sk-cube sk-cube7"></div>
+                    <div class="sk-cube sk-cube8"></div>
+                    <div class="sk-cube sk-cube9"></div>
+                </div>
+                <h4 class="text-center rock-face">Shouldn't be too long now.</h4>
+            </div>
+        </div>
+    </div>
