@@ -1,7 +1,7 @@
 chatroom
     .factory('ApiService', function($http){
         var ApiService = function() {
-            var applicationUrl = 'http://localhost:8000/v1/';
+            var applicationUrl = 'https://chatrooms-server.herokuapp.com/v1/';
 
             function get(url, data, success, failure){
                 url = applicationUrl.concat(url);
