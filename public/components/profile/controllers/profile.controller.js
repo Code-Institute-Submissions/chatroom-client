@@ -126,9 +126,27 @@ chatroom
             $cookies.putObject('user', $scope.user);
             $scope.croppedProfileImage = "";
             $scope.picFile = "";
+
+            $('#update-message').addClass('alert-success');
+            $scope.message = "Update profile successfully!";
+
+            setTimeout(function(){
+                $timeout(function(){
+                    $scope.message = "";                  
+                });
+                $('#update-message').removeClass('alert-success'); 
+            }, 2000);
         };
 
         function updateDetailsFailure(response) {
+            $('#update-message').addClass('alert-danger');            
+            $scope.message = "Failed to update profile!";
+            setTimeout(function(){
+                $timeout(function(){
+                    $scope.message = "";                  
+                });
+                $('#update-message').removeClass('alert-danger');          
+            }, 2000);
         };
 
         $scope.registerUser = function () {
@@ -139,14 +157,15 @@ chatroom
                     'password1': $scope.user.password,
                     'password2': $scope.user.password2,
                     "display_name": $scope.user.display_name,
-                    'profile_picture_path': 'media/generic_profile_picture.jpg'
+                    'profile_picture_path': 'media/generic_profile_picture.jpg',
+                    'rooms_joined': 1
                 },
                 registerSuccess,
                 registerFailure)
         };
 
         function registerSuccess(response) {
-            apiService.post('chatroom/user_rooms/',
+            apiService.post('rooms/add_to_room/',
                 {
                     'user': response.data.user,
                     'room': 1
@@ -166,11 +185,11 @@ chatroom
         };
 
         function userRoomSuccess(response) {
-            $scope.getUser(response.data.user);
+            $state.go('rooms_list', {user_id: response.data.user_id});
         };
 
         function userRoomFailure(response) {
-
+            console.log("Failed to add user to the general room");
         };
 
         $scope.logout = function () {
