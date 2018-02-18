@@ -9,7 +9,10 @@
                     </div>
                     <div class="panel-body">
                         <div class="col-md-12 col-sm-12" id="subscription" ng-if="!user.is_subscribed">
-                            <h5>For just £1 a month you can subscribe for the ability to add new rooms</h5>
+                            <h5>For just £10 you can pay for the ability to add new rooms</h5>
+                            <div class="alert hide" id="subscription-message">
+                                {{ subscriptionMessage }}
+                            </div>
                             <form stripe-form="createSubscription">
                                 <div class="form-group">
                                     <label>Card Number</label>
@@ -31,16 +34,17 @@
                         </div>
                         <div class="col-md-12 col-sm-12" id="subscription" ng-if="user.is_subscribed">
                             <div>
-                                <h4>Your subscription is due to renew on {{ user.subscription_end | date: 'medium' }}</h3>
-                                    <label>
-                                        Rooms Joined
-                                    </label>
-                                    <p>{{ user.rooms_joined }}/{{ user.room_limit }}</p>
+                                <h4>Thank you for taking the time to to create a payment for the site.</h3>
+                                <p>
+                                    I hope you enjoy the ability to create chatrooms.
+                                </p>
                             </div>
-                            <button class="btn btn-default pull-right" type="submit" ng-click="cancelSubscription()" style="margin-top: 3%;">Cancel</button>
                         </div>
                     </div>
                 </div>
+                <p>
+                    Use the card details: 4242 4242 4242 4242 and CVC 999 with any valid expiry date to create a test payment.
+                </p>
             </div>
         </div>
     </div>

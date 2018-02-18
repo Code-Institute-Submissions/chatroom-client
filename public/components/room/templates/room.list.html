@@ -93,8 +93,8 @@
                         </form>
                     </div>
                     <div class="panel-body" ng-if="!user.is_subscribed">
-                        <h4 class="text-center">A Subscription is required to perform this action.</h4>
-                        <subscription></subscription>
+                        <h4 class="text-center">A payment is required to perform this action.</h4>
+                        <p>Follow this link to to make a <a ui-sref="subscriptions({user_id: user.id })">payment</a></p>
                     </div>
                 </div>
             </div>
