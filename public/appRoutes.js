@@ -21,7 +21,7 @@ angular
     }).state({
         name: 'reset',
         url: '/password_reset',
-        templateUrl: '/public/components/profile/templates/password-reset.template.html',
+        templateUrl: '/public/components/profile/templates/password.reset.html',
         controller: 'ProfileController'
     }).state({
         name: 'rooms_list',

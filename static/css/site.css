@@ -162,4 +162,5 @@ a:hover{
     padding-left: 25px;
     text-decoration: none;
     text-transform: uppercase;
+    display: block;
 }

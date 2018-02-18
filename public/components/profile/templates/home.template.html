@@ -11,7 +11,8 @@
                     </h1>
                     <p>
                         If talking about the time Valentino Rossi won his 5th GP world championship, sharing cooking recipes with like minded people
-                        or walking and talking about some world famous hiking trails is your thing.. The chatrooms could be the place for you. 
+                        or walking and talking about some world famous hiking trails is your thing.. The chatrooms could
+                        be the place for you.
                     </p>
                     <p>
                         Share stories, trade insults, enjoy the lols and bants.. The chatrooms could be the place for you!
@@ -26,6 +27,9 @@
                         <div class="form-group">
                             <label for="user.password">Password</label>
                             <input type="text" class="form-control" ng-model="user.password" aria-describedby="passwordHelp" />
+                            <small>Trouble signing in?
+                                <a ui-sref="reset">reset your password</a>
+                            </small>
                         </div>
                         <p class="alert alert-danger hide" id="error-messages">{{ errorMessage }}</p>
                         <button class="btn btn-default">Sign In</button>

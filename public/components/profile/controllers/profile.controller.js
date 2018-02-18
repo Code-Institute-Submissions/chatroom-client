@@ -11,14 +11,14 @@ chatroom
         $scope.profileImage = '';
         $scope.croppedProfileImage = '';
 
-        function onLoad(){
+        function onLoad() {
             var userLoggedIn = false;
-            if($cookies.get('user')){
+            if ($cookies.get('user')) {
                 $scope.user = $cookies.getObject('user');
-                console.log("User logged in on profile controller", $scope.user.id, $scope.user.display_name);       
-                userLoggedIn = true;        
+                console.log("User logged in on profile controller", $scope.user.id, $scope.user.display_name);
+                userLoggedIn = true;
             }
-            if(userLoggedIn && $state.current.name === 'home'){
+            if (userLoggedIn && $state.current.name === 'home') {
                 console.log("User Already Logged In");
                 $state.go('rooms_list', { user_id: $scope.user.id });
             }
@@ -100,27 +100,6 @@ chatroom
             );
         };
 
-        $scope.createSubscription = function (code, result) {
-            if (result.error) {
-                // Add error messages to screen
-                updateDetailsFailure();
-            } else {
-                $scope.token_id = result.id;
-                apiService.put("users/" + $scope.user.id,
-                    {
-                        'user': {
-                            'email': $scope.user.email,
-                            'is_subscribed': true,
-                            'subscription_end': Date(),
-                            'stripe_id': $scope.token_id
-                        },
-                        'stripe_token': result.id
-                    },
-                    updateDetailsSuccess,
-                    updateDetailsFailure)
-            }
-        };
-
         function updateDetailsSuccess(response) {
             $scope.user = response.data;
             $cookies.putObject('user', $scope.user);
@@ -130,22 +109,22 @@ chatroom
             $('#update-message').addClass('alert-success');
             $scope.message = "Update profile successfully!";
 
-            setTimeout(function(){
-                $timeout(function(){
-                    $scope.message = "";                  
+            setTimeout(function () {
+                $timeout(function () {
+                    $scope.message = "";
                 });
-                $('#update-message').removeClass('alert-success'); 
+                $('#update-message').removeClass('alert-success');
             }, 2000);
         };
 
         function updateDetailsFailure(response) {
-            $('#update-message').addClass('alert-danger');            
+            $('#update-message').addClass('alert-danger');
             $scope.message = "Failed to update profile!";
-            setTimeout(function(){
-                $timeout(function(){
-                    $scope.message = "";                  
+            setTimeout(function () {
+                $timeout(function () {
+                    $scope.message = "";
                 });
-                $('#update-message').removeClass('alert-danger');          
+                $('#update-message').removeClass('alert-danger');
             }, 2000);
         };
 
@@ -185,7 +164,7 @@ chatroom
         };
 
         function userRoomSuccess(response) {
-            $state.go('rooms_list', {user_id: response.data.user_id});
+            $state.go('rooms_list', { user_id: response.data.user_id });
         };
 
         function userRoomFailure(response) {
@@ -210,21 +189,38 @@ chatroom
 
         };
 
-        $scope.resetPassword = function () {
-            apiService.post('password/change/',
+        $scope.changePassword = function () {
+            apiService.post("rest-auth/password/change/",
                 {
-                    'username': $scope.user.username,
-                    'password': $scope.user.password,
-                    'old_password': $scope.user.password,
-                    'new_password1': $scope.new_password1,
-                    'new_password2': $scope.new_password2
+                    'data': {
+                        'new_password1': $scope.new_password1,
+                        'new_password2': $scope.new_password2
+                    }
+                },
+                changePasswordSuccess,
+                changePasswordFailure
+            );
+        }
+        
+        function changePasswordSuccess(response) {
+            console.log("Password Changed Successfull");
+        }
+
+        function changePasswordFailure(response) {
+            console.log("Password Changed Failure");
+        }
+
+        $scope.resetPassword = function () {
+            apiService.post('rest-auth/password/reset/',
+                {
+                    'email': $scope.username,
                 },
                 resetSuccess,
                 resetFailure);
         }
 
         function resetSuccess(response) {
-            console.log("Password Reset Successfull");
+            console.log("Password Reset Successfull", response);
         }
 
         function resetFailure(response) {

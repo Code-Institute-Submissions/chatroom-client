@@ -76,7 +76,7 @@ chatroom
         function roomAddedSuccess(response) {
             console.log('room added success', response);
             $timeout(function(){
-
+                $state.go("messages", {room_id: response.data.id});
             });
         };
 
