@@ -1,6 +1,5 @@
 chatroom
     .controller('SubscriptionController', function ($scope, $state, $stateParams, $cookies, $timeout, ApiService) {
-        console.log("Subscription Controller Loaded");
         var socket;
         
         function onLoad() {
@@ -10,7 +9,6 @@ chatroom
 
             if ($cookies.getObject('user')) {
                 $scope.user = $cookies.getObject('user');
-                console.log("User logged in on room controller", $scope.user);
             } else {
                 user_id = $stateParams.user_id;
             }
@@ -36,7 +34,6 @@ chatroom
 
         $scope.createSubscription = function (code, result) {
             if (result.error) {
-                // Add error messages to screen
                 updateDetailsFailure();
             } else {
                 $scope.token_id = result.id;
@@ -66,7 +63,6 @@ chatroom
 
             setTimeout(function () {
                 $timeout(function () {
-                    console.log("Subscrption Message: ", $scope.subscription_message);
                     $scope.subscription_message = "";
                     $scope.user.is_subscribed = true;
                 });
@@ -75,7 +71,6 @@ chatroom
         };
 
         function subscribeFailure(response) {
-            console.log(response.data);
             $('#subscription-message').addClass('alert-danger').removeClass('hide');
             $scope.message = "Failed to to make payment this time!";
             setTimeout(function () {
@@ -94,11 +89,11 @@ chatroom
         }
 
         function cancelSuccess(response) {
-            console.log("Subscriptions Cancelled");
+            
         }
 
         function cancelFailure(response) {
-            console.log("Subscriptions Finished");
+            
         }
 
         onLoad();

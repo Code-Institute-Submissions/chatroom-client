@@ -1,6 +1,5 @@
 chatroom
     .controller('ProfileController', function ($scope, $state, $cookies, $timeout, ApiService, Upload) {
-        console.log("Profile Controller Loaded");
         var socket = io();
         var apiService = ApiService();
 
@@ -15,17 +14,14 @@ chatroom
             var userLoggedIn = false;
             if ($cookies.get('user')) {
                 $scope.user = $cookies.getObject('user');
-                console.log("User logged in on profile controller", $scope.user.id, $scope.user.display_name);
                 userLoggedIn = true;
             }
             if (userLoggedIn && $state.current.name === 'home') {
-                console.log("User Already Logged In");
                 $state.go('rooms_list', { user_id: $scope.user.id });
             }
         }
 
         socket.on('connect-user', function (socket_id) {
-            console.log("Connected user Socket Id: ", socket_id);
             $scope.user.socket_id = socket_id;
         });
 
@@ -68,7 +64,6 @@ chatroom
         };
 
         function loginSuccess(response) {
-            console.log("Login Success");
             $state.go('rooms_list', { user_id: response.data.user });
         };
 
@@ -168,7 +163,7 @@ chatroom
         };
 
         function userRoomFailure(response) {
-            console.log("Failed to add user to the general room");
+            
         };
 
         $scope.logout = function () {
@@ -203,11 +198,11 @@ chatroom
         }
         
         function changePasswordSuccess(response) {
-            console.log("Password Changed Successfull");
+            
         }
 
         function changePasswordFailure(response) {
-            console.log("Password Changed Failure");
+            
         }
 
         $scope.resetPassword = function () {
@@ -220,11 +215,11 @@ chatroom
         }
 
         function resetSuccess(response) {
-            console.log("Password Reset Successfull", response);
+            
         }
 
         function resetFailure(response) {
-            console.log("Password Reset Failure");
+            
         }
 
         onLoad();

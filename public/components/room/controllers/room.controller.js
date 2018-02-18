@@ -1,6 +1,5 @@
 chatroom
     .controller('RoomController', function ($scope, $state, $cookies, $stateParams, $timeout, ApiService) {
-        console.log("Room Controller Loaded");
 
         var LIMIT = 10;
         $scope.fetchingMessages = false;
@@ -19,8 +18,7 @@ chatroom
             apiService = ApiService();
 
             if($cookies.getObject('user')){
-                $scope.user = $cookies.getObject('user');
-                console.log("User logged in on room controller", $scope.user);      
+                $scope.user = $cookies.getObject('user'); 
             } else {
                 user_id = $stateParams.user_id;
             }
@@ -35,13 +33,12 @@ chatroom
         }
 
         function getUserSuccess(response) {
-            console.log("Get User Success", response.data);
             $cookies.putObject('user', response.data);
             $scope.user = response.data;
         }
 
         function getUserFailure(response) {
-            console.log("Get User Failure", response.data);
+            
         }
 
         function getRooms(user_id) {
@@ -53,12 +50,11 @@ chatroom
         }
 
         function getRoomsSuccess(response) {
-            console.log("Get Room Success", response.data);
             $scope.users_rooms = response.data;
         }
 
         function getRoomsFailure(response) {
-            console.log("Get User Failure", response.data);
+            
         }
 
         $scope.addRoom = function () {
@@ -74,27 +70,21 @@ chatroom
         };
 
         function roomAddedSuccess(response) {
-            console.log('room added success', response);
             $timeout(function(){
                 $state.go("messages", {room_id: response.data.id});
             });
         };
 
         function userRoomSuccess(response) {
-            console.log('added user room success', response);
 
-            // var user = $cookies.getObject('user');
-            // user.rooms_joined += 1;
-            // $cookies.putObject('user', user);
-            // $state.go('rooms');
         };
 
         function userRoomFailure(response) {
-            console.log('user room failure', response.data);
+            
         };
 
         function roomAddedFailure(response) {
-            console.log('room added failure', response);
+            
         };
 
         function roomAddedFailure(response) {
@@ -158,13 +148,11 @@ chatroom
         }
 
         function searchSuccess(response) {
-            console.log(response.data);
             $scope.searchableRooms = response.data;
-
         }
 
         function searchFailure(response) {
-            console.log(response);
+            
         }
 
         $scope.joinRoom = function (room_id) {
@@ -178,7 +166,6 @@ chatroom
         }
 
         function joinRoomSuccess(response) {
-            console.log("Joined Successfully", response);
             $scope.message = "Successfully joind the room.";
             $('#success-messages').fadeIn('fast', function(){
                 $('#success-messages').removeClass('hide');
@@ -192,8 +179,6 @@ chatroom
         }
 
         function joinRoomFailure(response) {
-            console.log("Failed to join room", response);
-
             $scope.message = "There was an issue while trying to add you to that room.";
             $('#error-messages').removeClass('hide');
 
@@ -203,7 +188,6 @@ chatroom
             }, 3000);
         }
 
-        // $scope.loadRoom($scope.roomId, true);
         onLoad();
         getUser(user_id);
         getRooms(user_id);
